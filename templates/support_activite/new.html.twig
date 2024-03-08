@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New SupportActivite{% endblock %}
+
+{% block body %}
+    <h1>Create new SupportActivite</h1>
+
+    {{ include('support_activite/_form.html.twig') }}
+
+    <a href="{{ path('app_support_activite_index') }}">back to list</a>
+{% endblock %}

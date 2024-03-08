@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EtudeCasActivite index{% endblock %}
+
+{% block body %}
+    <h1>EtudeCasActivite index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for etude_cas_activite in etude_cas_activites %}
+            <tr>
+                <td>{{ etude_cas_activite.id }}</td>
+                <td>
+                    <a href="{{ path('app_etude_cas_activite_show', {'id': etude_cas_activite.id}) }}">show</a>
+                    <a href="{{ path('app_etude_cas_activite_edit', {'id': etude_cas_activite.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_etude_cas_activite_new') }}">Create new</a>
+{% endblock %}

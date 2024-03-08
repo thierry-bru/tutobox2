@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sequence: {{ sequence.title }}{% endblock %}
+
+{% block body %}
+    <h2>{{ sequence.title }}</h2>
+    {% if sequence.video %}
+<p>Observez la vidéo, vous pouvez faire les exercices ensuite.</p>
+
+ <video width="100%" controls>
+<source src="{{ asset('videos/' ~ sequence.video)}}" type=video/mp4>
+
+      {% endif %}
+    </video>
+    {% if sequence.hasExerciceHTMLs %}
+    <a href="{{ path('app_module_exercices', {id:sequence.id,idExercice:firstExercice.id}) }}">faire les exercices</a>
+{% endif %}
+<h3>Sommaire de la séquence</h3>
+{% for seance in sequence.seances %}
+  <a href="{{ path('app_module_seance', {id:sequence.id,idSeance:seance.id}) }}">{{ seance.intitule }}</a>
+{% endfor %}
+   
+{% endblock %}

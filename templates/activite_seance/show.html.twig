@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ActiviteSeance{% endblock %}
+
+{% block body %}
+    <h1>ActiviteSeance</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ activite_seance.id }}</td>
+            </tr>
+            <tr>
+                <th>TitreActivite</th>
+                <td>{{ activite_seance.titreActivite }}</td>
+            </tr>
+            <tr>
+                <th>Consignes</th>
+                <td>{{ activite_seance.consignes }}</td>
+            </tr>
+            <tr>
+                <th>Duree</th>
+                <td>{{ activite_seance.duree }}</td>
+            </tr>
+            <tr>
+                <th>EstComplete</th>
+                <td>{{ activite_seance.estComplete ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Ordre</th>
+                <td>{{ activite_seance.ordre }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_activite_seance_index') }}">back to list</a>
+
+    <a href="{{ path('app_activite_seance_edit', {'id': activite_seance.id}) }}">edit</a>
+
+    {{ include('activite_seance/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,18 @@
+header
+{
+    min-height: 25vh;
+    background-position: center center;
+    background-image: url('/assets/pictures/background-header.jpg');
+    background-size: cover;
+}
+.navbar
+{
+    background-color: #AF874C;
+}
+.pied_article
+{
+   display: flex;
+   justify-content: flex-end;
+    margin: 15px 50px 15px 0px;
+}
+$primary: #F9070B;

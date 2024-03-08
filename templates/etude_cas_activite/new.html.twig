@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New EtudeCasActivite{% endblock %}
+
+{% block body %}
+    <h1>Create new EtudeCasActivite</h1>
+
+    {{ include('etude_cas_activite/_form.html.twig') }}
+
+    <a href="{{ path('app_etude_cas_activite_index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SupportActivite index{% endblock %}
+
+{% block body %}
+    <h1>SupportActivite index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>FileName</th>
+                <th>Filename</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for support_activite in support_activites %}
+            <tr>
+                <td>{{ support_activite.id }}</td>
+                <td>{{ support_activite.fileName }}</td>
+                <td>{{ support_activite.filename }}</td>
+                <td>
+                    <a href="{{ path('app_support_activite_show', {'id': support_activite.id}) }}">show</a>
+                    <a href="{{ path('app_support_activite_edit', {'id': support_activite.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_support_activite_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit ExerciceHP5{% endblock %}
+
+{% block body %}
+    <h1>Edit ExerciceHP5</h1>
+
+    {{ include('exercice_hp5/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_exercice_h_p5_index') }}">back to list</a>
+
+    {{ include('exercice_hp5/_delete_form.html.twig') }}
+{% endblock %}

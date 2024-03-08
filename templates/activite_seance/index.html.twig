@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ActiviteSeance index{% endblock %}
+
+{% block body %}
+    <h1>ActiviteSeance index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>TitreActivite</th>
+                <th>Consignes</th>
+                <th>Duree</th>
+                <th>EstComplete</th>
+                <th>Ordre</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for activite_seance in activite_seances %}
+            <tr>
+                <td>{{ activite_seance.id }}</td>
+                <td>{{ activite_seance.titreActivite }}</td>
+                <td>{{ activite_seance.consignes }}</td>
+                <td>{{ activite_seance.duree }}</td>
+                <td>{{ activite_seance.estComplete ? 'Yes' : 'No' }}</td>
+                <td>{{ activite_seance.ordre }}</td>
+                <td>
+                    <a href="{{ path('app_activite_seance_show', {'id': activite_seance.id}) }}">show</a>
+                    <a href="{{ path('app_activite_seance_edit', {'id': activite_seance.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_activite_seance_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New ModaliteActivite{% endblock %}
+
+{% block body %}
+    <h1>Create new ModaliteActivite</h1>
+
+    {{ include('modalite_activite/_form.html.twig') }}
+
+    <a href="{{ path('app_modalite_activite_index') }}">back to list</a>
+{% endblock %}

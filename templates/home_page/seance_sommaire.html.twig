@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sequence: {{ seance.sequence.title }}{% endblock %}
+
+{% block body %}
+    <h2>{{ seance.intitule }}</h2>
+<p>{{ seance.objectifs }}</p>
+
+<ul class="nav nav-tabs">
+{% for activite in seance.activites %}
+  <li class="nav-item">
+  {% if activite.id == num %}
+    <a class="nav-link active" aria-current="page" href="{{ path('app_module_seance',{id:seance.sequence.id,idSeance:seance.id,num:activite.id })}}">{{ activite.TitreActivite }}</a>
+    {% else %}
+    <a class="nav-link" aria-current="page" href="{{ path('app_module_seance',{id:seance.sequence.id,idSeance:seance.id,num:activite.id })}}">{{ activite.TitreActivite }}</a>
+    {% endif %}
+  </li>
+{% endfor %}
+</ul>
+<div class="row">
+<div class="col-3">
+<p>
+{% for modalite in activiteActive.modalites %}
+<span class="badge bg-primary">{{modalite.intitule}}</span>
+{% endfor %}
+</p>
+<p>
+{% for materiel in activiteActive.materiels %}
+<span class="badge bg-secondary">{{materiel.intitule}}</span>
+</p>
+<p>durée: {{ activiteActive.duree }}minutes </p>
+{% endfor %}
+</div>
+<div class="col-9">
+<h2>{{ activiteActive.titreActivite }}</h2>
+<h3>Consignes</h3>
+
+<p id="consigne" >{{ activiteActive.consignes | raw}}</p>
+</div>
+</div>
+
+<div {{ stimulus_controller('hello') }}>
+    ...
+</div>
+
+<a class="btn btn-primary" href="{{ path('app_activite_seance_edit',{id:activiteActive.id}) }}">Editer</a>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ExerciceHP5 index{% endblock %}
+
+{% block body %}
+    <h1>ExerciceHP5 index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>ContentHTML</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for exercice_h_p5 in exercice_h_p5s %}
+            <tr>
+                <td>{{ exercice_h_p5.id }}</td>
+                <td>{{ exercice_h_p5.contentHTML }}</td>
+                <td>
+                    <a href="{{ path('app_exercice_h_p5_show', {'id': exercice_h_p5.id}) }}">show</a>
+                    <a href="{{ path('app_exercice_h_p5_edit', {'id': exercice_h_p5.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_exercice_h_p5_new') }}">Create new</a>
+{% endblock %}

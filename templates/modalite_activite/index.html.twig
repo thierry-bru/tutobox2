@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ModaliteActivite index{% endblock %}
+
+{% block body %}
+    <h1>ModaliteActivite index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Intitule</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for modalite_activite in modalite_activites %}
+            <tr>
+                <td>{{ modalite_activite.id }}</td>
+                <td>{{ modalite_activite.intitule }}</td>
+                <td>
+                    <a href="{{ path('app_modalite_activite_show', {'id': modalite_activite.id}) }}">show</a>
+                    <a href="{{ path('app_modalite_activite_edit', {'id': modalite_activite.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_modalite_activite_new') }}">Create new</a>
+{% endblock %}

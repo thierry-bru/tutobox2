@@ -1,0 +1,34 @@
+    <script src="/js/tinymce/tinymce.min.js"></script>
+    <script>
+    
+      tinymce.init({
+        selector: 'textarea',
+        menubar: 'edit view',
+        toolbar: 'undo redo | styles | bold italic | alignleft aligncenter alignright alignjustify | outdent indent'
+      });
+    </script>
+{{ form_start(form) }}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2">
+        {{ form_row(form.seance) }}
+        {{ form_row(form.ordre) }}
+        {{ form_row(form.modalites) }}
+        {{ form_row(form.duree) }}
+        {{ form_row(form.estComplete) }}
+        {{ form_row(form.materiels) }}
+        </div>
+        <div class="col-10">
+        {{ form_row(form.titreActivite) }}
+        {{ form_row(form.consignes) }}
+        {{ form_row(form.exercices) }}
+        {{ form_row(form.etudeDeCas) }}
+        {{ form_row(form.supports) }}
+        </div>
+    </div>
+</div>
+    {{ form_widget(form) }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ form_errors(form) }}
+{{ form_end(form) }}
+

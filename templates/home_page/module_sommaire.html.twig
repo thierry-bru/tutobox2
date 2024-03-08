@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Module: {{ module.title }}{% endblock %}
+
+{% block body %}
+    <h2>{{ module.acronyme }} - {{ module.title }}</h2>
+    <p>Voici la liste des séquences disponibles</p>
+          <ol class="m-3">
+    {% for sequence in module.sequences %}
+       <li><a href="{{ path('app_sequence_sommaire',{id:sequence.id}) }}"> {{ sequence.title}}</a></li>
+
+    {% endfor %}
+       </ol >
+    {% endblock %}
