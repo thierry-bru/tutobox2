@@ -1,0 +1,19 @@
+ <turbo-frame id="liste_fiches" >
+    <h1>Détail de la fiche de révision</h1>
+
+    <table class="table">
+        <tbody>
+
+            <tr>
+                <th>Titre</th>
+                <td>{{ fiche_revision.titre }}</td>
+            </tr>
+            <tr>
+                <th>Fiche</th>
+                <td>{{ fiche_revision.fiche }}</td>
+            </tr>
+        </tbody>
+    </table>
+    {{ include('admin/sequence/fiche_revision/_delete_form.html.twig') }}
+
+</turbo-frame>

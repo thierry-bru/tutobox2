@@ -31,11 +31,15 @@ class Sequence
     #[ORM\OneToMany(mappedBy: 'sequence', targetEntity: Seance::class)]
     private Collection $seances;
 
+    #[ORM\OneToMany(mappedBy: 'sequence', targetEntity: FicheRevision::class)]
+    private Collection $ficheRevisions;
+
 
     public function __construct()
     {
         $this->exerciceHTMLs = new ArrayCollection();
         $this->seances = new ArrayCollection();
+        $this->ficheRevisions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -137,6 +141,36 @@ class Sequence
             // set the owning side to null (unless already changed)
             if ($seance->getSequence() === $this) {
                 $seance->setSequence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FicheRevision>
+     */
+    public function getFicheRevisions(): Collection
+    {
+        return $this->ficheRevisions;
+    }
+
+    public function addFicheRevision(FicheRevision $ficheRevision): static
+    {
+        if (!$this->ficheRevisions->contains($ficheRevision)) {
+            $this->ficheRevisions->add($ficheRevision);
+            $ficheRevision->setSequence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFicheRevision(FicheRevision $ficheRevision): static
+    {
+        if ($this->ficheRevisions->removeElement($ficheRevision)) {
+            // set the owning side to null (unless already changed)
+            if ($ficheRevision->getSequence() === $this) {
+                $ficheRevision->setSequence(null);
             }
         }
 

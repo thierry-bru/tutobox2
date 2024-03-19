@@ -6,6 +6,7 @@
 parameters:
     exercicehtml_directory: '%kernel.project_dir%/public/uploads/exercicehtml'
     avatars_directory: '%kernel.project_dir%/public/uploads/avatars'
+    fiches_revision_directory: '%kernel.project_dir%/public/uploads/fichesrevisions'
 services:
     # default configuration for services in *this* file
     _defaults:

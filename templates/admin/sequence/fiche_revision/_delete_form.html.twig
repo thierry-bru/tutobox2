@@ -1,0 +1,7 @@
+<form method="post" action="{{ path('app_fiche_revision_delete', {'id': fiche_revision.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ fiche_revision.id) }}">
+  
+    <a class="btn btn-primary" href="{{ path('app_fiche_revision_edit', {'id': fiche_revision.id}) }}">edit</a>
+     <button class="btn btn-secondary">Delete</button>
+      <a class="btn btn-secondary" href="{{ path('app_fiche_revision_index',{'idSequence':fiche_revision.sequence.id}) }}">back to list</a>  
+</form>

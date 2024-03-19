@@ -56,7 +56,7 @@ class AdminSequenceController extends AbstractController
     public function edit(Request $request, Sequence $sequence, EntityManagerInterface $entityManager,CursusRepository $cursusRepository): Response
     {
         $form = $this->createForm(SequenceType::class, $sequence, [
-            'action' => $this->generateUrl('app_sequence_edit')]);
+            'action' => $this->generateUrl('app_sequence_edit',['id'=>$sequence->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -81,4 +81,5 @@ class AdminSequenceController extends AbstractController
 
         return $this->redirectToRoute('app_sequence_index', [], Response::HTTP_SEE_OTHER);
     }
+    
 }

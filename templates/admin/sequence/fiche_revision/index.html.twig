@@ -1,0 +1,31 @@
+ <turbo-frame id="liste_fiches">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Fiche</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for fiche_revision in fiche_revisions %}
+            <tr>
+                <td>{{ fiche_revision.id }}</td>
+                <td>{{ fiche_revision.titre }}</td>
+                <td>{{ fiche_revision.fiche }}</td>
+                <td>
+                    <a href="{{ path('app_fiche_revision_show', {'id': fiche_revision.id}) }}">show</a>
+                    <a href="{{ path('app_fiche_revision_edit', {'id': fiche_revision.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_fiche_revision_new',{'idSequence':sequence.id}) }}">Create new</a>
+</turbo-frame>

@@ -1,0 +1,8 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+    <a class="btn btn-secondary" href="{{ path('app_fiche_revision_index',{'idSequence':fiche_revision.sequence.id}) }}">
+    Fermer
+    </a>
+{{ form_end(form) }}
+
