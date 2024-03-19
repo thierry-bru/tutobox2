@@ -21,6 +21,7 @@ class HomePageController extends AbstractController
     #[Route('/', name: 'app_home_page')]
     public function index(CursusRepository $cursusRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $menu = $cursusRepository->findAll();
         
         return $this->render('home_page/index.html.twig', [
@@ -70,4 +71,12 @@ class HomePageController extends AbstractController
             'sequence' => $sequence, 'menu' => $cursusRepository->findAll(),'seance'=>$seance,'num'=>$num,'activiteActive'=> $activite
         ]);
     }
+    #[Route('/show/login/', name: 'show_login_bar', methods: ['GET'])]
+    public function showLoginBar(): Response
+{
+    $user = $this->getUser();
+    return $this->render('home_page/elements/login_bar.html.twig', [
+        'user' => $user
+    ]);
+}
 }
