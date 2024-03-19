@@ -1,0 +1,9 @@
+ <turbo-frame id="main_page">
+    <h1>Edit Sequence</h1>
+
+    {{ include('admin/sequence/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_sequence_index') }}" data-turbo-frame="main_page">back to list</a>
+
+    {{ include('admin/sequence/_delete_form.html.twig') }}
+</turbo-frame>

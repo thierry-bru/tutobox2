@@ -1,8 +1,4 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Seance index{% endblock %}
-
-{% block body %}
+ <turbo-frame id="main_page">
     <h1>Seance index</h1>
 
     <table class="table">
@@ -23,8 +19,8 @@
                 <td>{{ seance.objectifs }}</td>
                 <td>{{ seance.estComplete ? 'Yes' : 'No' }}</td>
                 <td>
-                    <a href="{{ path('app_seance_show', {'id': seance.id}) }}">show</a>
-                    <a href="{{ path('app_seance_edit', {'id': seance.id}) }}">edit</a>
+                    <a href="{{ path('app_seance_show', {'id': seance.id}) }}" data-turbo-frame="main_page">show</a>
+                    <a href="{{ path('app_seance_edit', {'id': seance.id}) }}" data-turbo-frame="main_page">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -35,5 +31,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_seance_new') }}">Create new</a>
-{% endblock %}
+    <a href="{{ path('app_seance_new') }}" data-turbo-frame="main_page">Create new</a>
+</turbo-frame>

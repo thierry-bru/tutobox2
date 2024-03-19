@@ -13,21 +13,22 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/admin/module')]
-class ModuleController extends AbstractController
+class AdminModuleController extends AbstractController
 {
     #[Route('/', name: 'app_module_index', methods: ['GET'])]
-    public function index(ModuleRepository $moduleRepository,CursusRepository $cursusRepository): Response
+    public function list(ModuleRepository $moduleRepository,CursusRepository $cursusRepository): Response
 {
-        return $this->render('module/index.html.twig', [
+        return $this->render('admin/module/index.html.twig', [
             'modules' => $moduleRepository->findAll(), 'menu' => $cursusRepository->findAll(),
         ]);
     }
 
     #[Route('/new', name: 'app_module_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager,CursusRepository $cursusRepository): Response
+    public function newModule(Request $request, EntityManagerInterface $entityManager,CursusRepository $cursusRepository): Response
     {
         $module = new Module();
-        $form = $this->createForm(ModuleType::class, $module);
+        $form = $this->createForm(ModuleType::class, $module, [
+            'action' => $this->generateUrl('app_module_new')]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -37,24 +38,25 @@ class ModuleController extends AbstractController
             return $this->redirectToRoute('app_module_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('module/new.html.twig', [
+        return $this->render('admin/module/new.html.twig', [
             'module' => $module,
             'form' => $form, 'menu' => $cursusRepository->findAll(),
         ]);
     }
 
     #[Route('/{id}', name: 'app_module_show', methods: ['GET'])]
-    public function show(Module $module,CursusRepository $cursusRepository): Response
+    public function showModule(Module $module,CursusRepository $cursusRepository): Response
     {
-        return $this->render('module/show.html.twig', [
+        return $this->render('admin/module/show.html.twig', [
             'module' => $module, 'menu' => $cursusRepository->findAll(),
         ]);
     }
 
     #[Route('/{id}/edit', name: 'app_module_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Module $module, EntityManagerInterface $entityManager,CursusRepository $cursusRepository): Response
+    public function editModule(Request $request, Module $module, EntityManagerInterface $entityManager,CursusRepository $cursusRepository): Response
     {
-        $form = $this->createForm(ModuleType::class, $module);
+        $form = $this->createForm(ModuleType::class, $module, [
+            'action' => $this->generateUrl('app_module_edit',['id'=>$module->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -63,14 +65,14 @@ class ModuleController extends AbstractController
             return $this->redirectToRoute('app_module_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('module/edit.html.twig', [
+        return $this->render('admin/module/edit.html.twig', [
             'module' => $module,
             'form' => $form, 'menu' => $cursusRepository->findAll(),
         ]);
     }
 
     #[Route('/{id}', name: 'app_module_delete', methods: ['POST'])]
-    public function delete(Request $request, Module $module, EntityManagerInterface $entityManager): Response
+    public function deleteModule(Request $request, Module $module, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$module->getId(), $request->request->get('_token'))) {
             $entityManager->remove($module);

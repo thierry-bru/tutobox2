@@ -1,0 +1,7 @@
+ <turbo-frame id="main_page">
+    <h1>Create new Sequence</h1>
+
+    {{ include('admin/sequence/_form.html.twig') }}
+
+    <a href="{{ path('app_sequence_index') }}" data-turbo-frame="main_page">back to list</a>
+</turbo-frame>

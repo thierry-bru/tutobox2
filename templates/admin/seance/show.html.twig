@@ -1,8 +1,4 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Seance{% endblock %}
-
-{% block body %}
+ <turbo-frame id="main_page">
     <h1>Seance</h1>
 
     <table class="table">
@@ -26,9 +22,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_seance_index') }}">back to list</a>
+    <a href="{{ path('app_seance_index') }}" data-turbo-frame="main_page">back to list</a>
 
-    <a href="{{ path('app_seance_edit', {'id': seance.id}) }}">edit</a>
+    <a href="{{ path('app_seance_edit', {'id': seance.id}) }}" data-turbo-frame="main_page">edit</a>
 
-    {{ include('seance/_delete_form.html.twig') }}
-{% endblock %}
+    {{ include('admin/seance/_delete_form.html.twig') }}
+</turbo-frame>

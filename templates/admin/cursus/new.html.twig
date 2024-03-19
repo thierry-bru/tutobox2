@@ -1,0 +1,7 @@
+ <turbo-frame id="main_page">
+    <h1>Create new Cursus</h1>
+
+    {{ include('admin/cursus/_form.html.twig') }}
+
+    <a href="{{ path('app_cursus_index') }}"   data-turbo-frame="main_page">back to list</a>
+</turbo-frame>

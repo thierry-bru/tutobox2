@@ -13,12 +13,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/admin/seance')]
-class SeanceController extends AbstractController
+class AdminSeanceController extends AbstractController
 {
     #[Route('/', name: 'app_seance_index', methods: ['GET'])]
     public function index(SeanceRepository $seanceRepository,CursusRepository $cursusRepository): Response
     {
-        return $this->render('seance/index.html.twig', [
+        return $this->render('admin/seance/index.html.twig', [
             'seances' => $seanceRepository->findAll(),'menu' => $cursusRepository->findAll(),
         ]);
     }
@@ -27,7 +27,8 @@ class SeanceController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager,CursusRepository $cursusRepository): Response
     {
         $seance = new Seance();
-        $form = $this->createForm(SeanceType::class, $seance);
+        $form = $this->createForm(SeanceType::class, $seance, [
+            'action' => $this->generateUrl('app_seance_new')]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -37,7 +38,7 @@ class SeanceController extends AbstractController
             return $this->redirectToRoute('app_seance_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('seance/new.html.twig', [
+        return $this->render('admin/seance/new.html.twig', [
             'seance' => $seance,
             'form' => $form,'menu' => $cursusRepository->findAll(),
         ]);
@@ -46,7 +47,7 @@ class SeanceController extends AbstractController
     #[Route('/{id}', name: 'app_seance_show', methods: ['GET'])]
     public function show(Seance $seance,CursusRepository $cursusRepository): Response
     {
-        return $this->render('seance/show.html.twig', [
+        return $this->render('admin/seance/show.html.twig', [
             'seance' => $seance,'menu' => $cursusRepository->findAll(),
         ]);
     }
@@ -54,7 +55,8 @@ class SeanceController extends AbstractController
     #[Route('/{id}/edit', name: 'app_seance_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Seance $seance, EntityManagerInterface $entityManager,CursusRepository $cursusRepository): Response
     {
-        $form = $this->createForm(SeanceType::class, $seance);
+        $form = $this->createForm(SeanceType::class, $seance, [
+            'action' => $this->generateUrl('app_seance_edit',['id'=>$seance->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -63,7 +65,7 @@ class SeanceController extends AbstractController
             return $this->redirectToRoute('app_seance_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('seance/edit.html.twig', [
+        return $this->render('admin/seance/edit.html.twig', [
             'seance' => $seance,
             'form' => $form,'menu' => $cursusRepository->findAll(),
         ]);

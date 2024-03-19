@@ -1,8 +1,4 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Cursus index{% endblock %}
-
-{% block body %}
+ <turbo-frame id="main_page">
     <h1>Cursus index</h1>
 
     <table class="table">
@@ -19,8 +15,8 @@
                 <td>{{ cursu.id }}</td>
                 <td>{{ cursu.title }}</td>
                 <td>
-                    <a href="{{ path('app_cursus_show', {'id': cursu.id}) }}">show</a>
-                    <a href="{{ path('app_cursus_edit', {'id': cursu.id}) }}">edit</a>
+                    <a href="{{ path('app_cursus_show', {'id': cursu.id}) }}" data-turbo-frame="main_page">show</a>
+                    <a href="{{ path('app_cursus_edit', {'id': cursu.id}) }}" data-turbo-frame="main_page">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -31,5 +27,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_cursus_new') }}">Create new</a>
-{% endblock %}
+    <a href="{{ path('app_cursus_new') }}"   data-turbo-frame="main_page">Create new</a>
+</turbo-frame>
