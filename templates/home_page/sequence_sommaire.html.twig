@@ -1,8 +1,4 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Sequence: {{ sequence.title }}{% endblock %}
-
-{% block body %}
+ <turbo-frame id="main_page">
     <h2>{{ sequence.title }}</h2>
     {% if sequence.video %}
 <p>Observez la vidéo, vous pouvez faire les exercices ensuite.</p>
@@ -20,4 +16,4 @@
   <a href="{{ path('app_module_seance', {id:sequence.id,idSeance:seance.id}) }}">{{ seance.intitule }}</a>
 {% endfor %}
    
-{% endblock %}
+</turbo-frame>

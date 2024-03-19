@@ -17,7 +17,7 @@
           </a>
           <ul class="dropdown-menu">
              {% for moduleItem in menuItem.modules %}
-            <li><a class="dropdown-item" href="/home/sommaire/{{ moduleItem.id }}">{{ moduleItem.acronyme }} -  {{ moduleItem.title }}</a></li>
+            <li><a class="dropdown-item" href="/home/sommaire/{{ moduleItem.id }}"  data-turbo-frame="main_page">{{ moduleItem.acronyme }} -  {{ moduleItem.title }}</a></li>
             {% endfor %}
           </ul>
         </li>

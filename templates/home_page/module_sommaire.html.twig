@@ -1,8 +1,4 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Module: {{ module.title }}{% endblock %}
-
-{% block body %}
+ <turbo-frame id="main_page">
     <h2>{{ module.acronyme }} - {{ module.title }}</h2>
     <p>Voici la liste des séquences disponibles</p>
           <ol class="m-3">
@@ -11,4 +7,4 @@
 
     {% endfor %}
        </ol >
-    {% endblock %}
+</turbo-frame>

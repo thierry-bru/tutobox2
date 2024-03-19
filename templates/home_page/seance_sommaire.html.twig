@@ -1,8 +1,4 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Sequence: {{ seance.sequence.title }}{% endblock %}
-
-{% block body %}
+ <turbo-frame id="main_page">
     <h2>{{ seance.intitule }}</h2>
 <p>{{ seance.objectifs }}</p>
 
@@ -44,4 +40,4 @@
 </div>
 
 <a class="btn btn-primary" href="{{ path('app_activite_seance_edit',{id:activiteActive.id}) }}">Editer</a>
-{% endblock %}
+</turbo-frame>
