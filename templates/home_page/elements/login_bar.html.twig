@@ -1,7 +1,7 @@
      <turbo-frame id="login_bar">
      <div class="row loginbar">
-     
-  welcome {{user.getUsername()}}
+     <div class="col-11 text-light"> welcome {{user.getFirstName()}} {{user.getLastName()}}</div>
+     <div class="col-1"><a href="{{ path('app_profile_update') }}" data-turbo-frame="main_page" ><img class="avatar_small" src="{{asset('uploads/avatars/' ~ user.getAvatar)}}"></a></div>  
      </div>
-      
+  
     </turbo-frame>
