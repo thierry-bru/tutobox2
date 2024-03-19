@@ -1,4 +1,6 @@
  <turbo-frame id="main_page">
+ <div class="row">
+<div class="col">
     <h2>{{ sequence.title }}</h2>
     {% if sequence.video %}
 <p>Observez la vidéo, vous pouvez faire les exercices ensuite.</p>
@@ -8,12 +10,35 @@
 
       {% endif %}
     </video>
+    <p>Bienvenue dans cette nouvelle séquence de formation! Pour profiter pleinement de cette expérience d'apprentissage, nous vous encourageons à suivre attentivement les différentes séances en compagnie de notre formateur.</p>
+<p>À droite de votre écran, vous trouverez des fiches de révision soigneusement élaborées pour renforcer votre compréhension des sujets abordés. </p>
+<p>En fin de séquence, une évaluation vous attend. Nous vous encourageons à aborder cette évaluation avec sérieux, car elle est conçue pour renforcer votre compréhension et garantir que vous avez bien assimilé les concepts clés de la séquence.</p>
+
+<p>Bonne chance et bon apprentissage!</p>
     {% if sequence.hasExerciceHTMLs %}
     <a href="{{ path('app_module_exercices', {id:sequence.id,idExercice:firstExercice.id}) }}">faire les exercices</a>
 {% endif %}
+
 <h3>Sommaire de la séquence</h3>
+
+<ul>
 {% for seance in sequence.seances %}
-  <a href="{{ path('app_module_seance', {id:sequence.id,idSeance:seance.id}) }}">{{ seance.intitule }}</a>
+  <li><a href="{{ path('app_module_seance', {id:sequence.id,idSeance:seance.id}) }}">{{ seance.intitule }}</a></li>
 {% endfor %}
-   
+</ul>
+</div>
+<div class="col-3">
+<h3>Progression</h3>
+<div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+  <div class="progress-bar" style="width: 75%"></div>
+</div>
+<h3>Fiches révisions</h3>
+<ul>
+{% for fiche in sequence.getFicheRevisions() %}
+  <li><a href="{{ asset('uploads/fichesrevisions/'~fiche.getFiche()) }}">{{ fiche.titre }}</a></li>
+{% endfor %}
+</ul>
+</div>
+
+   </div>
 </turbo-frame>
