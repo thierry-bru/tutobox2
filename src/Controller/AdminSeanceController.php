@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Seance;
 use App\Form\SeanceType;
 use App\Repository\SeanceRepository;
+use App\Repository\SequenceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CursusRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,39 +16,41 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/admin/seance')]
 class AdminSeanceController extends AbstractController
 {
-    #[Route('/', name: 'app_seance_index', methods: ['GET'])]
-    public function index(SeanceRepository $seanceRepository,CursusRepository $cursusRepository): Response
+    #[Route('/{idSequence}', name: 'app_seance_index', methods: ['GET'])]
+    public function index(SeanceRepository $seanceRepository,CursusRepository $cursusRepository, $idSequence, SequenceRepository $sequenceRepository): Response
     {
-        return $this->render('admin/seance/index.html.twig', [
-            'seances' => $seanceRepository->findAll(),'menu' => $cursusRepository->findAll(),
+        $sequence = $sequenceRepository->find($idSequence);
+        return $this->render('admin/sequence/seance/index.html.twig', [
+            'seances' => $sequence->getSeances(),'sequence'=>$sequence,'menu' => $cursusRepository->findAll(),
         ]);
     }
 
-    #[Route('/new', name: 'app_seance_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager,CursusRepository $cursusRepository): Response
+    #[Route('/{idSequence}/new', name: 'app_seance_new', methods: ['GET', 'POST'])]
+    public function new(Request $request,$idSequence, EntityManagerInterface $entityManager,CursusRepository $cursusRepository, SequenceRepository $sequenceRepository): Response
     {
         $seance = new Seance();
+        $seance->setSequence($sequenceRepository->find($idSequence));
         $form = $this->createForm(SeanceType::class, $seance, [
-            'action' => $this->generateUrl('app_seance_new')]);
+            'action' => $this->generateUrl('app_seance_new',['idSequence'=>$idSequence])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($seance);
             $entityManager->flush();
-
-            return $this->redirectToRoute('app_seance_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_sequence_show',['id'=>$idSequence], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('admin/seance/new.html.twig', [
+        return $this->render('admin/sequence/seance/new.html.twig', [
             'seance' => $seance,
             'form' => $form,'menu' => $cursusRepository->findAll(),
+            'idSequence'=>$idSequence
         ]);
     }
 
-    #[Route('/{id}', name: 'app_seance_show', methods: ['GET'])]
+    #[Route('/{id}/show', name: 'app_seance_show', methods: ['GET'])]
     public function show(Seance $seance,CursusRepository $cursusRepository): Response
     {
-        return $this->render('admin/seance/show.html.twig', [
+        return $this->render('admin/sequence/seance/show.html.twig', [
             'seance' => $seance,'menu' => $cursusRepository->findAll(),
         ]);
     }
@@ -62,16 +65,16 @@ class AdminSeanceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_seance_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_sequence_show', ['id'=>$seance->getSequence()->getId()], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('admin/seance/edit.html.twig', [
+        return $this->render('admin/sequence/seance/edit.html.twig', [
             'seance' => $seance,
             'form' => $form,'menu' => $cursusRepository->findAll(),
         ]);
     }
 
-    #[Route('/{id}', name: 'app_seance_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_seance_delete', methods: ['POST'])]
     public function delete(Request $request, Seance $seance, EntityManagerInterface $entityManager,CursusRepository $cursusRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$seance->getId(), $request->request->get('_token'))) {
@@ -79,6 +82,6 @@ class AdminSeanceController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_seance_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_sequence_show',['id'=>$seance->getSequence()->getId()], Response::HTTP_SEE_OTHER);
     }
 }

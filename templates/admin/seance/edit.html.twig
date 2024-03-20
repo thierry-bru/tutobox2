@@ -1,9 +1,0 @@
- <turbo-frame id="main_page">
-    <h1>Edit Seance</h1>
-
-    {{ include('admin/seance/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_seance_index') }}" data-turbo-frame="main_page">back to list</a>
-
-    {{ include('admin/seance/_delete_form.html.twig') }}
-</turbo-frame>

@@ -1,0 +1,18 @@
+ <turbo-frame id="main_page">
+     <h1>Administration</h1>
+  <img src="{{ asset('icons/house.svg')}}"> <a href="{{ path('app_cursus_index') }}"   data-turbo-frame="main_page">Les Cursus</a>\ 
+  <a href="{{ path('app_cursus_show',{'id':seance.sequence.module.cursus.id}) }}"   data-turbo-frame="main_page">{{ seance.sequence.module.cursus.getAcronyme() }} </a>
+  \<a href="{{ path('app_module_show',{'id':seance.sequence.module.id}) }}"   data-turbo-frame="main_page"> {{ seance.sequence.module.acronyme }}</a>
+\ {{ seance.intitule }}
+  <h2>{{ seance.intitule }}</h2>
+  <p>
+{{ seance.objectifs }}
+  </p>
+  <p>
+  Séance terminée? {{ seance.estComplete ? 'Oui' : 'Non' }}</p>
+ <div class="d-flex flex-row-reverse">
+    <a class="btn btn-primary m-2" href="{{ path('app_seance_edit', {'id': seance.id}) }}" data-turbo-frame="main_page">Modifier</a>
+    {{ include('admin/sequence/seance/_delete_form.html.twig') }}
+    </div>
+
+</turbo-frame>

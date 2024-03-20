@@ -1,22 +1,17 @@
  <turbo-frame id="main_page">
-    <h1>Module</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ module.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ module.title }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_module_index') }}" data-turbo-frame="main_page">back to list</a>
-
-    <a href="{{ path('app_module_edit', {'id': module.id}) }}" data-turbo-frame="main_page">edit</a>
-
-    {{ include('module/_delete_form.html.twig') }}
+    <h1>Administration</h1>
+  <img src="{{ asset('icons/house.svg')}}"> <a href="{{ path('app_cursus_index') }}"   data-turbo-frame="main_page">Les Cursus</a>\ 
+  <a href="{{ path('app_cursus_show',{'id':module.cursus.id}) }}"   data-turbo-frame="main_page">{{ module.cursus.getAcronyme() }} </a>
+  \ {{ module.acronyme }}
+  <h2>{{ module.acronyme }} - {{ module.title() }}</h2>
+  <p>
+  {{ module.resume() }}
+  </p>
+ <div class="d-flex flex-row-reverse">
+    <a class="btn btn-primary m-2" href="{{ path('app_module_edit', {'id': module.id}) }}" data-turbo-frame="main_page">Modifier</a>
+    {{ include('admin/module/_delete_form.html.twig') }}
+    </div>
+    
+     <turbo-frame id="liste_sequences" src="{{ path('app_sequence_index',{'idModule':module.id})}}">
+     </turbo-frame>
 </turbo-frame>

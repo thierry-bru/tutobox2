@@ -1,7 +1,14 @@
- <turbo-frame id="main_page">
-    <h1>Create new Module</h1>
+ <turbo-frame id="liste_modules">
+     <div class="shadow-lg p-3 mb-2 bg-body-tertiary rounded">
+    <h2>Créer un Module</h2>
+   {{ form_start(form) }}
+    {{ form_widget(form) }}
+     <div class="d-flex flex-row-reverse">
+    <button class="btn btn-primary m-2">{{ button_label|default('Sauvegarder') }}</button>
+     <a class="btn btn-secondary m-2" href="{{ path('app_module_index',{'idCursus':idCursus}) }}" data-turbo-frame="liste_modules">Annuler</a>
+{{ form_end(form) }}
+</div>
 
-    {{ include('admin/module/_form.html.twig') }}
-
-    <a href="{{ path('app_module_index') }}" data-turbo-frame="main_page">back to list</a>
+    
+   
 </turbo-frame>

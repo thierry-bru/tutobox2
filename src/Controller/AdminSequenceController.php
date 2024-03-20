@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Sequence;
 use App\Form\SequenceType;
+use App\Entity\Module;
+use App\Repository\ModuleRepository;
 use App\Repository\SequenceRepository;
 use App\Repository\CursusRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,27 +17,29 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/admin/sequence')]
 class AdminSequenceController extends AbstractController
 {
-    #[Route('/', name: 'app_sequence_index', methods: ['GET'])]
-    public function index(SequenceRepository $sequenceRepository,CursusRepository $cursusRepository): Response
+    #[Route('/{idModule}/list', name: 'app_sequence_index', methods: ['GET'])]
+    public function index(SequenceRepository $sequenceRepository,ModuleRepository $moduleRepository,CursusRepository $cursusRepository,$idModule): Response
     {
+        $module = $moduleRepository->find($idModule);
         return $this->render('admin/sequence/index.html.twig', [
-            'sequences' => $sequenceRepository->findAll(),'menu' => $cursusRepository->findAll(),
+            'module' => $module,'menu' => $cursusRepository->findAll(),
         ]);
     }
 
-    #[Route('/new', name: 'app_sequence_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager,CursusRepository $cursusRepository): Response
+    #[Route('{idModule}/new', name: 'app_sequence_new', methods: ['GET', 'POST'])]
+    public function new(Request $request,$idModule, EntityManagerInterface $entityManager,ModuleRepository $moduleRepository, CursusRepository $cursusRepository): Response
     {
         $sequence = new Sequence();
+        $sequence->setModule($moduleRepository->find($idModule));
         $form = $this->createForm(SequenceType::class, $sequence, [
-            'action' => $this->generateUrl('app_sequence_new')]);
+            'action' => $this->generateUrl('app_sequence_new',['idModule'=>$idModule])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($sequence);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_sequence_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_sequence_index',['idModule'=>$idModule], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('admin/sequence/new.html.twig', [
@@ -44,7 +48,7 @@ class AdminSequenceController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_sequence_show', methods: ['GET'])]
+    #[Route('/{id}/show', name: 'app_sequence_show', methods: ['GET'])]
     public function show(Sequence $sequence,CursusRepository $cursusRepository): Response
     {
         return $this->render('admin/sequence/show.html.twig', [
@@ -62,7 +66,7 @@ class AdminSequenceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_sequence_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_module_show', ['id'=>$sequence->getModule()->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('admin/sequence/edit.html.twig', [
@@ -71,15 +75,16 @@ class AdminSequenceController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_sequence_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_sequence_delete', methods: ['POST'])]
     public function delete(Request $request, Sequence $sequence, EntityManagerInterface $entityManager): Response
     {
+        $idModule = $sequence->getModule()->getId();
         if ($this->isCsrfTokenValid('delete'.$sequence->getId(), $request->request->get('_token'))) {
             $entityManager->remove($sequence);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_sequence_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_sequence_index', ['idModule'=>$idModule], Response::HTTP_SEE_OTHER);
     }
     
 }

@@ -1,22 +1,16 @@
  <turbo-frame id="main_page">
-    <h1>Cursus</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ cursu.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ cursu.title }}</td>
-            </tr>
-        </tbody>
+ <h1>Administration</h1>
+    
+     <img src="{{ asset('icons/house.svg')}}"> <a href="{{ path('app_cursus_index') }}"   data-turbo-frame="main_page">Les Cursus</a>\ {{ cursu.getAcronyme() }}
+    <h2>{{ cursu.title }}</h2>
+    <p>{{ cursu.getResume() }}</p>
     </table>
-
-    <a href="{{ path('app_cursus_index') }}"   data-turbo-frame="main_page">back to list</a>
-
-    <a href="{{ path('app_cursus_edit', {'id': cursu.id}) }}"   data-turbo-frame="main_page">edit</a>
-
+    <div class="d-flex flex-row-reverse">
     {{ include('admin/cursus/_delete_form.html.twig') }}
+    <a class="btn btn-primary m-2" href="{{ path('app_cursus_edit', {'id': cursu.id}) }}"   data-turbo-frame="main_page">Modifier</a>
+   </div>
+
+     <turbo-frame id="liste_modules" src="{{ path('app_module_index',{'idCursus':cursu.id})}}">
+     </turbo-frame>
+</turbo-frame>
 </turbo-frame>

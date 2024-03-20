@@ -1,0 +1,36 @@
+ <turbo-frame id="liste_fiches">
+    <h2>Liste des Séances</h2>
+
+    <table class="table shadow-lg p-3 mb-2 bg-body-tertiary rounded">
+        <thead>
+            <tr>
+                <th>Intitule</th>
+                <th>Objectifs</th>
+                <th>Terminée</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for seance in seances %}
+            <tr>
+                <td>{{ seance.intitule }}</td>
+                <td>{{ seance.objectifs }}</td>
+                <td>{{ seance.estComplete ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_seance_show', {'id': seance.id}) }}" data-turbo-frame="main_page"><img src="{{ asset('icons/eye.svg')}}"></a>
+                    <a href="{{ path('app_seance_edit', {'id': seance.id}) }}" data-turbo-frame="main_page"><img src="{{ asset('icons/pencil-square.svg')}}"></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+       <div class="d-flex flex-row-reverse">
+    <a class="btn btn-primary m-2" href="{{ path('app_seance_new',{'idSequence':sequence.id}) }}"   data-turbo-frame="main_page">Ajouter une Séance</a>
+    </div>
+</turbo-frame>

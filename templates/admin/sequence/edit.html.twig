@@ -1,9 +1,11 @@
  <turbo-frame id="main_page">
-    <h1>Edit Sequence</h1>
-
-    {{ include('admin/sequence/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_sequence_index') }}" data-turbo-frame="main_page">back to list</a>
-
-    {{ include('admin/sequence/_delete_form.html.twig') }}
+     <h1>Administration</h1>
+  <img src="{{ asset('icons/house.svg')}}"> <a href="{{ path('app_cursus_index') }}"   data-turbo-frame="main_page">Les Cursus</a>\ 
+  <a href="{{ path('app_cursus_show',{'id':sequence.module.cursus.id}) }}"   data-turbo-frame="main_page">{{ sequence.module.cursus.getAcronyme() }} </a>
+  \ <a href="{{ path('app_module_show',{'id':sequence.module.id}) }}"   data-turbo-frame="main_page"> {{ sequence.module.acronyme }}</a>
+  \  {{ sequence.title }}
+    <h2>Editer la Séquence</h2>
+    <div class="shadow-lg p-3 mb-2 bg-body-tertiary rounded">
+    {{ include('admin/sequence/_form.html.twig', {'button_label': 'Sauvegarder'}) }}
+</div>
 </turbo-frame>

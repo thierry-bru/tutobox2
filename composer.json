@@ -9,6 +9,7 @@
         "ext-iconv": "*",
         "amphp/http-client": "4.2.1",
         "components/highlightjs": "^9.16",
+        "corveda/php-sandbox": "^3.1",
         "doctrine/doctrine-bundle": "^2.11",
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/orm": "^2.17",
@@ -46,6 +47,7 @@
         "symfony/webpack-encore-bundle": "^2.1",
         "symfony/yaml": "7.0.*",
         "tinymce/tinymce": "^6.8",
+        "twbs/bootstrap-icons": "^1.11",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0"
     },

@@ -1,9 +1,10 @@
  <turbo-frame id="main_page">
-    <h1>Edit Module</h1>
-
-    {{ include('admin/module/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_module_index') }}" data-turbo-frame="main_page">back to list</a>
-
-    {{ include('module/_delete_form.html.twig') }}
+     <h1>Administration</h1>
+  <img src="{{ asset('icons/house.svg')}}"> <a href="{{ path('app_cursus_index') }}"   data-turbo-frame="main_page">Les Cursus</a>\ 
+  <a href="{{ path('app_cursus_show',{'id':module.cursus.id}) }}"   data-turbo-frame="main_page">{{ module.cursus.getAcronyme() }} </a>
+  \ {{ module.acronyme }}
+    <h2>Editer le module</h2>
+    <div class="shadow-lg p-3 mb-2 bg-body-tertiary rounded">
+    {{ include('admin/module/_form.html.twig', {'button_label': 'Sauvegarder'}) }}
+</div>
 </turbo-frame>

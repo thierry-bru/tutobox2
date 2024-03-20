@@ -1,22 +1,20 @@
- <turbo-frame id="main_page">
-    <h1>Sequence index</h1>
+ <turbo-frame id="liste_sequences">
+    <h2>Liste des Séquences</h2>
 
-    <table class="table">
+    <table class="table shadow-lg p-3 mb-2 bg-body-tertiary rounded">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Title</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for sequence in sequences %}
+        {% for sequence in module.sequences %}
             <tr>
-                <td>{{ sequence.id }}</td>
                 <td>{{ sequence.title }}</td>
                 <td>
-                    <a href="{{ path('app_sequence_show', {'id': sequence.id}) }}" data-turbo-frame="main_page">show</a>
-                    <a href="{{ path('app_sequence_edit', {'id': sequence.id}) }}" data-turbo-frame="main_page">edit</a>
+                    <a href="{{ path('app_sequence_show', {'id': sequence.id}) }}" data-turbo-frame="main_page"><img src="{{ asset('icons/eye.svg')}}"></a>
+                    <a href="{{ path('app_sequence_edit', {'id': sequence.id}) }}" data-turbo-frame="main_page"><img src="{{ asset('icons/pencil-square.svg')}}"></a>
                 </td>
             </tr>
         {% else %}
@@ -27,5 +25,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_sequence_new') }}" data-turbo-frame="main_page">Create new</a>
+         <div class="d-flex flex-row-reverse">
+    <a class="btn btn-primary m-2" href="{{ path('app_sequence_new',{'idModule':module.id}) }}"   data-turbo-frame="main_page">Ajouter une Séquence</a>
+    </div>
 </turbo-frame>

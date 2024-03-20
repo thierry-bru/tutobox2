@@ -1,12 +1,12 @@
  <turbo-frame id="main_page">
-    <h1>Cursus index</h1>
-
-    <table class="table">
+    <h1>Les Cursus disponibles</h1>
+    <p>Voici la liste des différents cursus créés par le formateur. Vous pouvez éditer les informations sur le cursus ou simplement parcourir le cursus pour les améliorer.</p>
+    <table class="table shadow-lg p-3 mb-2 bg-body-tertiary rounded">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Title</th>
-                <th>actions</th>
+                <th>Titre</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -15,8 +15,8 @@
                 <td>{{ cursu.id }}</td>
                 <td>{{ cursu.title }}</td>
                 <td>
-                    <a href="{{ path('app_cursus_show', {'id': cursu.id}) }}" data-turbo-frame="main_page">show</a>
-                    <a href="{{ path('app_cursus_edit', {'id': cursu.id}) }}" data-turbo-frame="main_page">edit</a>
+                    <a href="{{ path('app_cursus_show', {'id': cursu.id}) }}" data-turbo-frame="main_page"><img src="{{ asset('icons/eye.svg')}}"></a>
+                    <a href="{{ path('app_cursus_edit', {'id': cursu.id}) }}" data-turbo-frame="main_page"><img src="{{ asset('icons/pencil-square.svg')}}"></a>
                 </td>
             </tr>
         {% else %}
@@ -26,6 +26,7 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_cursus_new') }}"   data-turbo-frame="main_page">Create new</a>
+  <div class="d-flex flex-row-reverse">
+    <a class="btn btn-primary m-2" href="{{ path('app_cursus_new') }}"   data-turbo-frame="main_page">Ajouter un Cursus</a>
+    </div>
 </turbo-frame>

@@ -15,32 +15,35 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/admin/module')]
 class AdminModuleController extends AbstractController
 {
-    #[Route('/', name: 'app_module_index', methods: ['GET'])]
-    public function list(ModuleRepository $moduleRepository,CursusRepository $cursusRepository): Response
+    #[Route('/{idCursus}/list', name: 'app_module_index', methods: ['GET'])]
+    public function list(ModuleRepository $moduleRepository,CursusRepository $cursusRepository,$idCursus): Response
 {
+    $cursus = $cursusRepository->find($idCursus);
         return $this->render('admin/module/index.html.twig', [
-            'modules' => $moduleRepository->findAll(), 'menu' => $cursusRepository->findAll(),
+            'modules' => $cursus->getModules(), 'menu' => $cursusRepository->findAll(),'cursus'=>$cursus
         ]);
     }
 
-    #[Route('/new', name: 'app_module_new', methods: ['GET', 'POST'])]
-    public function newModule(Request $request, EntityManagerInterface $entityManager,CursusRepository $cursusRepository): Response
+    #[Route('/{idCursus}/new', name: 'app_module_new', methods: ['GET', 'POST'])]
+    public function newModule(Request $request,$idCursus,EntityManagerInterface $entityManager,CursusRepository $cursusRepository): Response
     {
         $module = new Module();
+        $module->setCursus($cursusRepository->find($idCursus));
         $form = $this->createForm(ModuleType::class, $module, [
-            'action' => $this->generateUrl('app_module_new')]);
+            'action' => $this->generateUrl('app_module_new',['idCursus'=>$idCursus])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($module);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_module_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_module_index', ['idCursus'=>$module->getCursus()->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('admin/module/new.html.twig', [
             'module' => $module,
             'form' => $form, 'menu' => $cursusRepository->findAll(),
+            'idCursus'=>$idCursus
         ]);
     }
 
@@ -62,7 +65,7 @@ class AdminModuleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_module_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_cursus_show', ['id'=>$module->getCursus()->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('admin/module/edit.html.twig', [
@@ -74,11 +77,12 @@ class AdminModuleController extends AbstractController
     #[Route('/{id}', name: 'app_module_delete', methods: ['POST'])]
     public function deleteModule(Request $request, Module $module, EntityManagerInterface $entityManager): Response
     {
+        $idCursus = $module->getCursus()->getId();
         if ($this->isCsrfTokenValid('delete'.$module->getId(), $request->request->get('_token'))) {
             $entityManager->remove($module);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_module_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_cursus_show', ['id'=>$idCursus], Response::HTTP_SEE_OTHER);
     }
 }

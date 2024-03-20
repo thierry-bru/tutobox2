@@ -13,15 +13,16 @@
             {{ encore_entry_script_tags('app') }}
              {% endblock %}
     </head>
-    <body>
-     <header>
+    <body class="scrollable-content">
+    <div class="container-fluid">
+     <header class="row">
      {% block profile %}
 
         {% endblock %}
  
     <h1>Tutobox 2</h1>
   </header>
-  <div class="container-fluid">
+  
 <div class="row">
 {% block menu %}
         {% endblock %}
@@ -31,7 +32,8 @@
         {% endblock %}
 </main>
 
-</div>
-          <footer> Thierry BRU pour Via Formation </footer>
+
+          <footer class="row"> Thierry BRU pour Via Formation </footer>
     </body>
+    </div>
 </html>
