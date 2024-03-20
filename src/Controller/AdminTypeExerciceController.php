@@ -11,13 +11,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/type/exercice')]
-class TypeExerciceController extends AbstractController
+#[Route('/admin/type/exercice')]
+class AdminTypeExerciceController extends AbstractController
 {
     #[Route('/', name: 'app_type_exercice_index', methods: ['GET'])]
     public function index(TypeExerciceRepository $typeExerciceRepository): Response
     {
-        return $this->render('type_exercice/index.html.twig', [
+        return $this->render('admin/type_exercice/index.html.twig', [
             'type_exercices' => $typeExerciceRepository->findAll(),
         ]);
     }
@@ -26,7 +26,8 @@ class TypeExerciceController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $typeExercice = new TypeExercice();
-        $form = $this->createForm(TypeExerciceType::class, $typeExercice);
+        $form = $this->createForm(TypeExerciceType::class, $typeExercice, [
+            'action' => $this->generateUrl('app_type_exercice_new')]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -36,7 +37,7 @@ class TypeExerciceController extends AbstractController
             return $this->redirectToRoute('app_type_exercice_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('type_exercice/new.html.twig', [
+        return $this->render('admin/type_exercice/new.html.twig', [
             'type_exercice' => $typeExercice,
             'form' => $form,
         ]);
@@ -45,7 +46,7 @@ class TypeExerciceController extends AbstractController
     #[Route('/{id}', name: 'app_type_exercice_show', methods: ['GET'])]
     public function show(TypeExercice $typeExercice): Response
     {
-        return $this->render('type_exercice/show.html.twig', [
+        return $this->render('admin/type_exercice/show.html.twig', [
             'type_exercice' => $typeExercice,
         ]);
     }
@@ -62,7 +63,7 @@ class TypeExerciceController extends AbstractController
             return $this->redirectToRoute('app_type_exercice_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('type_exercice/edit.html.twig', [
+        return $this->render('admin/type_exercice/edit.html.twig', [
             'type_exercice' => $typeExercice,
             'form' => $form,
         ]);

@@ -1,0 +1,38 @@
+ <turbo-frame id="liste_exercices">
+    <h2>Liste des exercices</h2>
+
+    <table class="table shadow-lg p-3 mb-2 bg-body-tertiary rounded">
+        <thead>
+            <tr>
+                <th>Intitule</th>
+                <th>Instructions</th>
+                <th>FichierSupport</th>
+                <th>FichierCorrection</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for exercice in exercices %}
+            <tr>
+                <td>{{ exercice.id }}</td>
+                <td>{{ exercice.intitule }}</td>
+                <td>{{ exercice.instructions }}</td>
+                <td>{{ exercice.fichierSupport }}</td>
+                <td>{{ exercice.fichierCorrection }}</td>
+                <td>
+                    <a href="{{ path('app_admin_exercice_show', {'id': exercice.id}) }}" data-turbo-frame="main_page"><img src="{{ asset('icons/eye.svg')}}"></a>
+                    <a href="{{ path('app_admin_exercice_edit', {'id': exercice.id}) }}" data-turbo-frame="main_page"><img src="{{ asset('icons/pencil-square.svg')}}"></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+       <div class="d-flex flex-row-reverse">
+    <a class="btn btn-primary m-2" href="{{ path('app_admin_exercice_new',{'idSeance':seance.id}) }}"   data-turbo-frame="main_page">Ajouter un Exercice</a>
+    </div>
+</turbo-frame>

@@ -35,9 +35,13 @@ class Seance
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $ordre = null;
 
+    #[ORM\OneToMany(mappedBy: 'seance', targetEntity: Exercice::class)]
+    private Collection $exercices;
+
     public function __construct()
     {
         $this->activites = new ArrayCollection();
+        $this->exercices = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -131,6 +135,36 @@ class Seance
     public function setOrdre(int $ordre): static
     {
         $this->ordre = $ordre;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Exercice>
+     */
+    public function getExercices(): Collection
+    {
+        return $this->exercices;
+    }
+
+    public function addExercice(Exercice $exercice): static
+    {
+        if (!$this->exercices->contains($exercice)) {
+            $this->exercices->add($exercice);
+            $exercice->setSeance($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExercice(Exercice $exercice): static
+    {
+        if ($this->exercices->removeElement($exercice)) {
+            // set the owning side to null (unless already changed)
+            if ($exercice->getSeance() === $this) {
+                $exercice->setSeance(null);
+            }
+        }
 
         return $this;
     }
