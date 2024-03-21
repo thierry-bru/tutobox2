@@ -68,12 +68,8 @@ class AdminCursusController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-            if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
-                // If the request comes from Turbo, set the content type as text/vnd.turbo-stream.html and only send the HTML to update
-                $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
-            return $this->redirectToRoute('app_cursus_index', [], Response::HTTP_SEE_OTHER);
-            }
-            return $this->redirectToRoute('app_cursus_index', [], Response::HTTP_SEE_OTHER);
+
+            return $this->redirectToRoute('app_cursus_show', ['id'=>$cursu->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('admin/cursus/edit.html.twig', [

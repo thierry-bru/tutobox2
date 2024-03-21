@@ -1,37 +1,31 @@
  <turbo-frame id="main_page">
-    <h2>{{ seance.intitule }}</h2>
-<p>{{ seance.objectifs }}</p>
-
-<ul class="nav nav-tabs">
-{% for activite in seance.activites %}
-  <li class="nav-item">
-  {% if activite.id == num %}
-    <a class="nav-link active" aria-current="page" href="{{ path('app_module_seance',{id:seance.sequence.id,idSeance:seance.id,num:activite.id })}}">{{ activite.TitreActivite }}</a>
-    {% else %}
-    <a class="nav-link" aria-current="page" href="{{ path('app_module_seance',{id:seance.sequence.id,idSeance:seance.id,num:activite.id })}}">{{ activite.TitreActivite }}</a>
-    {% endif %}
-  </li>
-</ul>
 <div class="row">
-<div class="col-3">
-<p>
-{% for modalite in activiteActive.modalites %}
-<span class="badge bg-primary">{{modalite.intitule}}</span>
+<div class="col">
+ <a href="{{ path('app_module_sommaire',{'id':sequence.module.id}) }}"> {{ sequence.module.acronyme}}</a>
+ / <a href="{{ path('app_sequence_sommaire',{'id':sequence.id}) }}"> {{ sequence.title }}</a>
+<h2>{{ seance.intitule }}</h2>
+<p>{{ seance.objectifs }}</p>
+<ul class="">
+{% for exercice in seance.exercices %}
+  <li>{{ exercice.intitule }} [{{ exercice.type }}] </li>
 {% endfor %}
-</p>
-<p>
-{% for materiel in activiteActive.materiels %}
-<span class="badge bg-secondary">{{materiel.intitule}}</span>
-</p>
-<p>durée: {{ activiteActive.duree }}minutes </p>
-{% endfor %}
-</div>
-<div class="col-9">
-<h2>{{ activiteActive.titreActivite }}</h2>
-<h3>Consignes</h3>
+</ul>
+{# #[Route('/home/seance/{idSeance}/exercices/{idExercice}', name: 'app_seance_exercices', methods: ['GET'])] #}
+<a href="{{ path('app_seance_exercices',{'idSeance':seance.id,'idExercice':0}) }}"> Démarrer</a>
 
-<p id="consigne" >{{ activiteActive.consignes | raw}}</p>
 </div>
+<div class="col-3">
+<h3>Progression</h3>
+<div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+  <div class="progress-bar" style="width: 75%"></div>
 </div>
+<h3>Fiches révisions</h3>
+<ul>
+{% for fiche in sequence.getFicheRevisions() %}
+  <li><a href="{{ asset('uploads/fichesrevisions/'~fiche.getFiche()) }}">{{ fiche.titre }}</a></li>
 {% endfor %}
+</ul>
+</div>
+
+   </div>
 </turbo-frame>

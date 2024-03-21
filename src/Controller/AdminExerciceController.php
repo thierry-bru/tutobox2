@@ -79,7 +79,7 @@ class AdminExerciceController extends AbstractController
             $entityManager->persist($exercice);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_seance_show', ['idSeance'=>$idSeance], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_seance_show', ['id'=>$idSeance], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('admin/exercice/new.html.twig', [
@@ -100,13 +100,14 @@ class AdminExerciceController extends AbstractController
     #[Route('/{id}/edit', name: 'app_admin_exercice_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Exercice $exercice, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(ExerciceType::class, $exercice);
+        $form = $this->createForm(ExerciceType::class, $exercice,[
+            'action' => $this->generateUrl('app_admin_exercice_edit',['id'=>$exercice->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_admin_exercice_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_admin_exercice_show', ['id'=>$exercice->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('admin/exercice/edit.html.twig', [
@@ -118,11 +119,12 @@ class AdminExerciceController extends AbstractController
     #[Route('/{id}', name: 'app_admin_exercice_delete', methods: ['POST'])]
     public function delete(Request $request, Exercice $exercice, EntityManagerInterface $entityManager): Response
     {
+        $idSeance = $exercice->getSeance()->getId();
         if ($this->isCsrfTokenValid('delete'.$exercice->getId(), $request->request->get('_token'))) {
             $entityManager->remove($exercice);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_admin_exercice_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_seance_show', ['id'=>$idSeance], Response::HTTP_SEE_OTHER);
     }
 }

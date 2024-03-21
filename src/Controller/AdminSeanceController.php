@@ -65,7 +65,7 @@ class AdminSeanceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_sequence_show', ['id'=>$seance->getSequence()->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_seance_show', ['id'=>$seance->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('admin/sequence/seance/edit.html.twig', [

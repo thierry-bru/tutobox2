@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ExerciceRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -45,30 +46,32 @@ class HomePageController extends AbstractController
             'sequence' => $sequence, 'firstExercice'=>$firstExercice, 'menu' => $cursusRepository->findAll(),
         ]);
     }
-    #[Route('/home/sequence/{id}/exercices/{idExercice}', name: 'app_module_exercices', methods: ['GET'])]
-    public function exercices(ModuleRepository $moduleRepository,ExerciceHTMLRepository $exerciceHTMLRepository,SequenceRepository $SequenceRepository,CursusRepository $cursusRepository,int $id, int $idExercice): Response
-{
-    $sequence = $SequenceRepository->find($id);
-    $firstExercice= $exerciceHTMLRepository->find($idExercice);
-        return $this->render('home_page/sequence_exercices.html.twig', [
-            'sequence' => $sequence, 'menu' => $cursusRepository->findAll(),'idExercice'=>$idExercice,'firstExercice'=> $firstExercice
-        ]);
-    }
+//     #[Route('/home/sequence/{id}/exercices/{idExercice}', name: 'app_module_exercices', methods: ['GET'])]
+//     public function exercices(ModuleRepository $moduleRepository,ExerciceHTMLRepository $exerciceHTMLRepository,SequenceRepository $SequenceRepository,CursusRepository $cursusRepository,int $id, int $idExercice): Response
+// {
+//     $sequence = $SequenceRepository->find($id);
+//     $firstExercice= $exerciceHTMLRepository->find($idExercice);
+//         return $this->render('home_page/sequence_exercices.html.twig', [
+//             'sequence' => $sequence, 'menu' => $cursusRepository->findAll(),'idExercice'=>$idExercice,'firstExercice'=> $firstExercice
+//         ]);
+//     }
     #[Route('/home/sequence/{id}/seance/{idSeance}/{num}', name: 'app_module_seance', methods: ['GET'])]
-    public function seance(ModuleRepository $moduleRepository,SeanceRepository $seanceRepository,SequenceRepository $SequenceRepository,ActiviteSeanceRepository $activiteSeanceRepository,CursusRepository $cursusRepository,int $id, int $idSeance, int $num =0): Response
+    public function seance(ModuleRepository $moduleRepository,SeanceRepository $seanceRepository,SequenceRepository $SequenceRepository,ExerciceRepository $exerciceRepository,CursusRepository $cursusRepository,int $id, int $idSeance, int $num =0): Response
 {
     $sequence = $SequenceRepository->find($id);
     $seance= $seanceRepository->find($idSeance);
     if (!isset($num)||$num==0)
     {
         $num=0;
-        $activite = $seance->getActivites()->first();
+        $exercices = $seance->getExercices();
+        return $this->render('home_page/seance_sommaire.html.twig', [
+            'sequence' => $sequence, 'menu' => $cursusRepository->findAll(),'seance'=>$seance,'num'=>$num,'exercices'=> $exercices
+        ]);
     }
     else
-        $activite = $activiteSeanceRepository->find($num);
-       
+        $exercice = $exerciceRepository->find($num);
         return $this->render('home_page/seance_sommaire.html.twig', [
-            'sequence' => $sequence, 'menu' => $cursusRepository->findAll(),'seance'=>$seance,'num'=>$num,'activiteActive'=> $activite
+            'sequence' => $sequence, 'menu' => $cursusRepository->findAll(),'seance'=>$seance,'num'=>$num,'exercice'=> $exercice
         ]);
     }
     #[Route('/show/login/', name: 'show_login_bar', methods: ['GET'])]
@@ -77,6 +80,19 @@ class HomePageController extends AbstractController
     $user = $this->getUser();
     return $this->render('home_page/elements/login_bar.html.twig', [
         'user' => $user
+    ]);
+}
+
+#[Route('/home/seance/{idSeance}/exercices/{idExercice}', name: 'app_seance_exercices', methods: ['GET'])]
+public function exercices(ModuleRepository $moduleRepository,ExerciceRepository $exerciceRepository,SeanceRepository $seanceRepository,CursusRepository $cursusRepository, int $idExercice=0, int $idSeance): Response
+{
+$seance = $seanceRepository->find($idSeance);
+if ($idExercice==0)
+    $exercice= $seance->getExercices()->first();
+else
+    $exercice= $exerciceRepository->find($idExercice);
+    return $this->render('home_page/seance_exercices.html.twig', [
+        'seance' => $seance,'sequence'=>$seance->getSequence(), 'menu' => $cursusRepository->findAll(),'idExercice'=>$idExercice,'currentExercice'=> $exercice
     ]);
 }
 }

@@ -65,7 +65,7 @@ class AdminModuleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_cursus_show', ['id'=>$module->getCursus()->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_module_show', ['id'=>$module->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('admin/module/edit.html.twig', [

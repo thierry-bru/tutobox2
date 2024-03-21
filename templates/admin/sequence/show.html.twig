@@ -4,9 +4,13 @@
   <a href="{{ path('app_cursus_show',{'id':sequence.module.cursus.id}) }}"   data-turbo-frame="main_page">{{ sequence.module.cursus.getAcronyme() }} </a>
   \ <a href="{{ path('app_module_show',{'id':sequence.module.id}) }}"   data-turbo-frame="main_page"> {{ sequence.module.acronyme }}</a>
   \  {{ sequence.title }}
- / <a href="{{ path('app_sequence_edit', {'id': sequence.id}) }}" data-turbo-frame="main_page">edit</a>
+ / 
    <h2>{{ sequence.title }}</h2>
     <p>Une séquence avec un contenu multiple.</p>
+     <div class="d-flex flex-row-reverse">
+    <a class="btn btn-primary m-2" href="{{ path('app_sequence_edit', {'id': sequence.id}) }}" data-turbo-frame="main_page">Modifier</a>
+    {{ include('admin/sequence/_delete_form.html.twig') }}
+    </div>
 <div class="shadow-lg p-3 mb-5 bg-body-tertiary rounded">
      <ul class="nav nav-tabs">
   <li class="nav-item">

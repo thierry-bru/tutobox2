@@ -1,9 +1,12 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Exercice{% endblock %}
-
-{% block body %}
-    <h1>Exercice</h1>
+<turbo-frame id="main_page"> 
+      <h1>Administration</h1>
+  <img src="{{ asset('icons/house.svg')}}"> <a href="{{ path('app_cursus_index') }}"   data-turbo-frame="main_page">Les Cursus</a>\ 
+  <a href="{{ path('app_cursus_show',{'id':exercice.seance.sequence.module.cursus.id}) }}"   data-turbo-frame="main_page">{{ exercice.seance.sequence.module.cursus.getAcronyme() }} </a>
+  \ <a href="{{ path('app_module_show',{'id':exercice.seance.sequence.module.id}) }}"   data-turbo-frame="main_page"> {{ exercice.seance.sequence.module.acronyme }}</a>
+  \ <a href="{{ path('app_sequence_show',{'id':exercice.seance.sequence.id}) }}"   data-turbo-frame="main_page" >{{ exercice.seance.sequence.title }}</a>
+    \ <a href="{{ path('app_seance_show',{'id':exercice.seance.id}) }}"   data-turbo-frame="main_page" >{{ exercice.seance.intitule }}</a>
+  \ {{ exercice.intitule }}
+    <h2>Exercice</h2>
 
     <table class="table">
         <tbody>
@@ -29,10 +32,8 @@
             </tr>
         </tbody>
     </table>
-
-    <a href="{{ path('app_admin_exercice_index') }}">back to list</a>
-
-    <a href="{{ path('app_admin_exercice_edit', {'id': exercice.id}) }}">edit</a>
-
-    {{ include('admin_exercice/_delete_form.html.twig') }}
-{% endblock %}
+ <div class="d-flex flex-row-reverse">
+    <a class="btn btn-primary m-2" href="{{ path('app_admin_exercice_edit', {'id': exercice.id}) }}" data-turbo-frame="main_page">Modifier</a>
+    {{ include('admin/exercice/_delete_form.html.twig') }}
+    </div>
+</turbo-frame>
