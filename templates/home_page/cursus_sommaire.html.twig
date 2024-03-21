@@ -1,0 +1,17 @@
+ <turbo-frame id="main_page">
+ <div class="main_page row scrollable-content">
+ <div class="col-4" style="background-image:url({{ asset('uploads/illustrations/'~cursus.image)}});background-size:cover">
+ </div>
+ <div class="col-8">
+ <img src="{{ asset('icons/house.svg')}}"> {{ cursus.acronyme}} / Sommaire
+    <h2>{{ cursus.acronyme}} - {{ cursus.title}}</h2>
+    <p>Voici la liste des modules disponibles</p>
+          <ol class="m-3">
+    {% for module in cursus.modules %}
+       <li><a href="{{ path('app_module_sommaire',{id:module.id}) }}">{{ module.acronyme}} - {{ module.title}}</a></li>
+
+    {% endfor %}
+       </ol >
+   </div>
+   </div>
+</turbo-frame>

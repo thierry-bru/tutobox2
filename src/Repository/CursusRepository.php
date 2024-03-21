@@ -45,4 +45,36 @@ class CursusRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+public function countExerciceOfCursusDone(int $idUser, int $idCursus): int
+{
+    $conn = $this->getEntityManager()->getConnection();
+    $sql = '
+    SELECT * FROM module m, sequence sq,seance s, exercice_user es, exercice e
+    Where s.id = e.seance_id 
+    and e.id=es.exercice_id 
+    and es.user_id = :userId 
+    and sq.module_id= m.id
+    and s.sequence_id = sq.id
+    and m.cursus_id=:cursusId
+    ';
+    $resultSet = $conn->executeQuery($sql, ['cursusId' => $idCursus,'userId'=>$idUser]);
+
+    // returns an array of arrays (i.e. a raw data set)
+    return $resultSet->rowCount();
+}
+public function countExerciceOfCursus( int $idCursus): int
+{
+    $conn = $this->getEntityManager()->getConnection();
+    $sql = '
+    SELECT * FROM module m ,sequence sq, seance s, exercice e
+    Where s.id = e.seance_id 
+    and s.sequence_id = sq.id
+    and sq.module_id= m.id
+    and m.cursus_id=:cursusId
+    ';
+    $resultSet = $conn->executeQuery($sql, ['cursusId' => $idCursus]);
+
+    // returns an array of arrays (i.e. a raw data set)
+    return $resultSet->rowCount();
+}
 }

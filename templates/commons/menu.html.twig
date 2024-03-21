@@ -1,4 +1,4 @@
- <nav class="navbar navbar-expand-lg">
+ <nav class="navbar navbar-expand-lg p-2">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">Barre de navigation</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,18 +10,18 @@
             <a class="nav-link" href="index.php">Accueil</a>
           </li>
           <!-- sous menu -->
-          {% for menuItem in menu %}
+         
           <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            {{ menuItem.title}}
+            Formations
           </a>
           <ul class="dropdown-menu">
-             {% for moduleItem in menuItem.modules %}
-            <li><a class="dropdown-item" href="/home/sommaire/{{ moduleItem.id }}"  data-turbo-frame="main_page">{{ moduleItem.acronyme }} -  {{ moduleItem.title }}</a></li>
+             {% for menuItem in menu %}
+            <li><a class="dropdown-item" href="{{ path('app_cursus_sommaire',{'id':menuItem.id}) }}"  data-turbo-frame="main_page">{{ menuItem.acronyme }} -  {{ menuItem.title }}</a></li>
             {% endfor %}
           </ul>
         </li>
-         {% endfor %}
+  
        
     {# PARTIE ADMIN #}
          <li class="nav-item dropdown">

@@ -9,6 +9,7 @@ parameters:
     fiches_revision_directory: '%kernel.project_dir%/public/uploads/fichesrevisions'
     fiches_support_directory: '%kernel.project_dir%/public/uploads/supports'
     fiches_correction_directory: '%kernel.project_dir%/public/uploads/corrections'
+    illustrations_directory: '%kernel.project_dir%/public/uploads/illustrations'
 services:
     # default configuration for services in *this* file
     _defaults:

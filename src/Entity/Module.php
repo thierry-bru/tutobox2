@@ -32,6 +32,8 @@ class Module
     #[ORM\Column(type: Types::TEXT)]
     private ?string $resume = null;
 
+ 
+
     public function __construct()
     {
         $this->sequences = new ArrayCollection();
@@ -123,4 +125,5 @@ class Module
 
         return $this;
     }
+    
 }

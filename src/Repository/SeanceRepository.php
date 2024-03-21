@@ -45,4 +45,27 @@ class SeanceRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+public function countExerciceOfSeanceDone(int $idUser, int $idSeance): int
+{
+    $conn = $this->getEntityManager()->getConnection();
+    $sql = '
+    SELECT * FROM seance s, exercice_user es, exercice e
+    Where s.id = e.seance_id and e.id=es.exercice_id and es.user_id = :userId and s.id=:seanceId;';
+    $resultSet = $conn->executeQuery($sql, ['seanceId' => $idSeance,'userId'=>$idUser]);
+
+    // returns an array of arrays (i.e. a raw data set)
+    return $resultSet->rowCount();
+}
+public function countExerciceOfSeance( int $idSeance): int
+{
+    $conn = $this->getEntityManager()->getConnection();
+    $sql = '
+    SELECT * FROM seance s, exercice e
+    Where s.id = e.seance_id and s.id = :seanceId;';
+    $resultSet = $conn->executeQuery($sql, ['seanceId' => $idSeance]);
+
+    // returns an array of arrays (i.e. a raw data set)
+    return $resultSet->rowCount();
+}
+
 }

@@ -45,4 +45,33 @@ class ModuleRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+public function countExerciceOfModuleDone(int $idUser, int $idModule): int
+{
+    $conn = $this->getEntityManager()->getConnection();
+    $sql = '
+    SELECT * FROM sequence sq,seance s, exercice_user es, exercice e
+    Where s.id = e.seance_id 
+    and e.id=es.exercice_id 
+    and es.user_id = :userId 
+    and sq.module_id=:moduleId 
+    and s.sequence_id = sq.id;';
+    $resultSet = $conn->executeQuery($sql, ['moduleId' => $idModule,'userId'=>$idUser]);
+
+    // returns an array of arrays (i.e. a raw data set)
+    return $resultSet->rowCount();
+}
+public function countExerciceOfModule( int $idModule): int
+{
+    $conn = $this->getEntityManager()->getConnection();
+    $sql = '
+    SELECT * FROM sequence sq, seance s, exercice e
+    Where s.id = e.seance_id 
+    and s.sequence_id = sq.id
+    and sq.module_id=:moduleId
+    ';
+    $resultSet = $conn->executeQuery($sql, ['moduleId' => $idModule]);
+
+    // returns an array of arrays (i.e. a raw data set)
+    return $resultSet->rowCount();
+}
 }

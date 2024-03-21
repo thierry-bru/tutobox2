@@ -168,4 +168,5 @@ class Seance
 
         return $this;
     }
+
 }

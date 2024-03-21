@@ -9,9 +9,11 @@ use App\Repository\CursusRepository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\UX\Turbo\TurboBundle;
 
 #[Route('/admin/cursus')]
@@ -26,7 +28,7 @@ class AdminCursusController extends AbstractController
     }
 
     #[Route('/new', name: 'app_cursus_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $cursu = new Cursus();
         $form = $this->createForm(CursusType::class, $cursu, [
@@ -35,6 +37,24 @@ class AdminCursusController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $illustrationFile = $form->get('image')->getData();
+            if ($illustrationFile) {
+                $originalFilename = pathinfo($illustrationFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$illustrationFile->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $illustrationFile->move(
+                        $this->getParameter('illustrations_directory'), 
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+                $cursu->setImage($newFilename);
+            }
             $entityManager->persist($cursu);
             $entityManager->flush();
             if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
@@ -60,13 +80,31 @@ class AdminCursusController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_cursus_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Cursus $cursu, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Cursus $cursu, EntityManagerInterface $entityManager,SluggerInterface $slugger): Response
     {
         $form = $this->createForm(CursusType::class, $cursu, [
             'action' => $this->generateUrl('app_cursus_edit',['id'=>$cursu->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $illustrationFile = $form->get('image')->getData();
+            if ($illustrationFile) {
+                $originalFilename = pathinfo($illustrationFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$illustrationFile->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $illustrationFile->move(
+                        $this->getParameter('illustrations_directory'), 
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+                $cursu->setImage($newFilename);
+            }
             $entityManager->flush();
 
             return $this->redirectToRoute('app_cursus_show', ['id'=>$cursu->getId()], Response::HTTP_SEE_OTHER);

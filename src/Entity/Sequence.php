@@ -176,6 +176,5 @@ class Sequence
 
         return $this;
     }
-
  
 }

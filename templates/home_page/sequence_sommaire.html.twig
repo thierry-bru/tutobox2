@@ -1,6 +1,10 @@
  <turbo-frame id="main_page">
  <div class="row">
-<div class="col">
+<div class="col m-2">
+ <img src="{{ asset('icons/house.svg')}}">
+ <a class="fil-ariane" href="{{ path('app_cursus_sommaire',{'id':sequence.module.cursus.id})}}"> {{ sequence.module.cursus.acronyme}} </a>
+/ <a href="{{ path('app_module_sommaire',{'id':sequence.module.id}) }}"> {{ sequence.module.acronyme}}</a> 
+/ Séquence /  Sommaire
     <h2>{{ sequence.title }}</h2>
     {% if sequence.video %}
 <p>Observez la vidéo, vous pouvez faire les exercices ensuite.</p>
@@ -27,10 +31,11 @@
 {% endfor %}
 </ul>
 </div>
-<div class="col-3">
+<div class="col-3 p-2">
 <h3>Progression</h3>
-<div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-  <div class="progress-bar" style="width: 75%"></div>
+</p>Exercices: {{done}} / {{total}}</p>
+<div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="{{avancement}}" aria-valuemin="0" aria-valuemax="100">
+  <div class="progress-bar" style="width: {{avancement}}%"></div>
 </div>
 <h3>Fiches révisions</h3>
 <ul>

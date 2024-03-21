@@ -13,8 +13,8 @@
             {{ encore_entry_script_tags('app') }}
              {% endblock %}
     </head>
-    <body class="scrollable-content">
-    <div class="container-fluid">
+    <body >
+    <div class="container-fluid" style="padding:0px;overflow:hidden;">
      <header class="row">
      {% block profile %}
 
@@ -23,17 +23,18 @@
     <h1>Tutobox 2</h1>
   </header>
   
-<div class="row">
+<nav class="row">
 {% block menu %}
         {% endblock %}
-</div>
-<main class="row" style="min-height:60vh">
+</nav>
+<main class="scrollable-content">
         {% block body %}
         {% endblock %}
 </main>
 
 
-          <footer class="row"> Thierry BRU pour Via Formation </footer>
+          <footer class="row"> <div class="col m-2">Thierry BRU pour Via Formation </div> </footer>
+              </div>
     </body>
-    </div>
+
 </html>

@@ -45,4 +45,5 @@ class ExerciceRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+  
 }

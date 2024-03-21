@@ -1,5 +1,15 @@
  <turbo-frame id="main_page">
-    <h2>{{ module.acronyme }} - {{ module.title }}</h2>
+  <div class="main_page row scrollable-content">
+ <div class="col-4" style="background-image:url({{ asset('uploads/illustrations/'~module.cursus.image)}});background-size:cover">
+ </div>
+ <div class="col-8">
+ <img src="{{ asset('icons/house.svg')}}">
+ <a class="fil-ariane" href="{{ path('app_cursus_sommaire',{'id':module.cursus.id})}}"> {{ module.cursus.acronyme}} </a>
+ / {{ module.acronyme }} 
+ / Sommaire
+    <h2>{{ module.title }}</h2>
+
+
     <p>Voici la liste des séquences disponibles</p>
           <ol class="m-3">
     {% for sequence in module.sequences %}
@@ -7,4 +17,5 @@
 
     {% endfor %}
        </ol >
+  </div></div>
 </turbo-frame>

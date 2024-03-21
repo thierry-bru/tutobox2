@@ -45,4 +45,33 @@ class SequenceRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+public function countExerciceOfSequenceDone(int $idUser, int $idSequence): int
+{
+    $conn = $this->getEntityManager()->getConnection();
+    $sql = '
+    SELECT * FROM sequence sq,seance s, exercice_user es, exercice e
+    Where s.id = e.seance_id 
+    and e.id=es.exercice_id 
+    and es.user_id = :userId 
+    and sq.id=:sequenceId 
+    and s.sequence_id = sq.id;';
+    $resultSet = $conn->executeQuery($sql, ['sequenceId' => $idSequence,'userId'=>$idUser]);
+
+    // returns an array of arrays (i.e. a raw data set)
+    return $resultSet->rowCount();
+}
+public function countExerciceOfSequence( int $idSequence): int
+{
+    $conn = $this->getEntityManager()->getConnection();
+    $sql = '
+    SELECT * FROM sequence sq, seance s, exercice e
+    Where s.id = e.seance_id 
+    and sq.id=:sequenceId 
+    and s.sequence_id = sq.id';
+    $resultSet = $conn->executeQuery($sql, ['sequenceId' => $idSequence]);
+
+    // returns an array of arrays (i.e. a raw data set)
+    return $resultSet->rowCount();
+}
 }
