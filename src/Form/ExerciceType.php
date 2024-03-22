@@ -19,6 +19,9 @@ class ExerciceType extends AbstractType
         $builder
             ->add('intitule')
             ->add('instructions')
+            ->add('codeAttendu')
+            ->add('codeBase')
+            ->add('codeTest')
             ->add('fichierSupport', FileType::class, [
                             'label' => 'Fichier Exercice',
             

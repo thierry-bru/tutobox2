@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ExerciceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ExerciceRepository::class)]
@@ -35,6 +36,15 @@ class Exercice
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'exercices')]
     private Collection $users;
+
+    #[ORM\Column(length: 4096, nullable:true)]
+    private $codeBase = null;
+
+    #[ORM\Column(length: 4096, nullable:true)]
+    private $codeTest = null;
+
+    #[ORM\Column(length: 4096, nullable:true)]
+    private $codeAttendu = null;
 
 
     public function __construct()
@@ -139,6 +149,42 @@ class Exercice
     public function removeUser(User $user): static
     {
         $this->users->removeElement($user);
+
+        return $this;
+    }
+
+    public function getCodeBase()
+    {
+        return $this->codeBase;
+    }
+
+    public function setCodeBase($codeBase): static
+    {
+        $this->codeBase = $codeBase;
+
+        return $this;
+    }
+
+    public function getCodeTest()
+    {
+        return $this->codeTest;
+    }
+
+    public function setCodeTest($codeTest): static
+    {
+        $this->codeTest = $codeTest;
+
+        return $this;
+    }
+
+    public function getCodeAttendu()
+    {
+        return $this->codeAttendu;
+    }
+
+    public function setCodeAttendu($codeAttendu): static
+    {
+        $this->codeAttendu = $codeAttendu;
 
         return $this;
     }

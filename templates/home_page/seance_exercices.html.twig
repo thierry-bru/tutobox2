@@ -10,17 +10,50 @@
     {{ currentExercice.instructions}} 
     </div>
     <div class="row">
+  
+      {% if type == "HP5" %}
           <iframe class="" style="height:40vh" src="  {{asset('uploads/supports/' ~ currentExercice.fichierSupport)}}" allowfullscreen="allowfullscreen"></iframe>
+      {% endif %}
+       {% if type == "PHP" %}
+         <div class="col-8">
+         <h3>Votre code</h3>
+         <div class="code" style="background-color: black; color: white">
+         <form method="post" action="{{ path('app_seance_exercices',{'idSeance':seance.id,'num':num})}}">
+         Saisissez le code ici
+         <textarea name="code" style="width:100%;border-color: Transparent;background-color: black; color: white">{{ codeSaisi }}</textarea>
+           {{ codeBase }}
+           <div class="d-flex flex-row-reverse">
+       <button class="btn btn-primary m-2">Tester</button></div>
+         </form> 
+         </div>
+         </div>
+    <div class="col-4">
+      <h3>Résultat Attendu</h3>
+    <div class="codeResultat" style="border:1px solid black;";>
+        
+              {{ resultatAttendu }}
+              </div>
+           </div>
+              <div class="col-4">
+              {{ resultat }}
+              {{ errorMessage }}
+           </div>    
+      {% endif %}
+
   </div>
 
    <div class="d-flex flex-row-reverse">
-  {% if next < total and next> 0 %}
- <a class="btn btn-secondary m-2" href="{{ path('app_seance_exercices',{'idSeance':seance.id,'num':next}) }}"> Suivant</a>
+  {% if next <= total and next> 0 %}
+ <a class="btn btn-primary m-2" href="{{ path('app_seance_exercices',{'idSeance':seance.id,'num':next}) }}"> Suivant</a>
   {% endif %}
  {% if user.isExerciceDone(currentExercice) %}
 <a class="btn btn-secondary m-2" href="{{ path('app_seance_exercice_reset',{'idExercice':currentExercice.id,'num':num}) }}"> Invalider</a>
 {% else %}
- <a class="btn btn-success m-2" href="{{ path('app_seance_exercice_validate',{'idExercice':currentExercice.id,'num':num}) }}"> Valider</a>
+{% if error %}
+<p class="btn btn-secondary m-2" href="#" > Valider</p>
+{% else %}
+ <a class="btn btn-success m-2" href="{{ path('app_seance_exercice_validate',{'idExercice':currentExercice.id,'num':num}) }}" > Valider</a>
+ {% endif %}
  {% endif %}
    {% if prec> 0 %}
  <a class="btn btn-secondary m-2" href="{{ path('app_seance_exercices',{'idSeance':seance.id,'num':prec}) }}"> Précédent</a>

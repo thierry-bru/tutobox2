@@ -143,7 +143,7 @@ public function exerciceReset(ModuleRepository $moduleRepository,ExerciceReposit
  return $this->redirectToRoute('app_seance_exercices', ['idSeance'=>$exercice->getSeance()->getId(),'num'=>$num], Response::HTTP_SEE_OTHER);   
 }
 
-#[Route('/home/seance/{idSeance}/exercices/{num}', name: 'app_seance_exercices', methods: ['GET'])]
+#[Route('/home/seance/{idSeance}/exercices/{num}', name: 'app_seance_exercices', methods: ['GET','POST'])]
 public function exercices(ModuleRepository $moduleRepository,ExerciceRepository $exerciceRepository,SeanceRepository $seanceRepository,CursusRepository $cursusRepository, int $num=0, int $idSeance, EntityManagerInterface $entityManager): Response
 {
 $idExercice=0;
@@ -170,9 +170,38 @@ $exercice= $exerciceRepository->find($idExercice);
     // $user = $this->getUser();
     // $user->addExercice($exercice);
     // $entityManager->flush();
+    $error=false;
+    $errorMessage="";
+    $codeSaisi="";
+    if (isset($_POST['code']))
+    {
+        ob_start();
+        $resultat= false;
+        try {
+            $codeSaisi = $_POST['code'];
+            eval( "declare(strict_types=1);".$codeSaisi.$exercice->getCodeBase().$exercice->getCodeTest());
+        } catch (\Throwable $th) {
+            //throw $th;
+            $errorMessage= $th->getMessage();
+            $error=true;
+        }
+        $resultat = ob_get_clean();
+      
+    }
+    else 
+     {
+        $resultat="pas encore exécuté";
+        $error=true;
+     }
+     ob_start();
+     eval("declare(strict_types=1);".$exercice->getCodeAttendu());
+     $resultatAttendu = ob_get_clean();
+
     return $this->render('home_page/seance_exercices.html.twig', [
         'seance' => $seance,'sequence'=>$seance->getSequence(), 'menu' => $cursusRepository->findAll(),'idExercice'=>$idExercice,'currentExercice'=> $exercice,'prec'=>$prec,'next'=>$next,'num'=>$num,'user'=>$this->getUser(),
-        'avancement'=>$avancement,'done'=>$nbExoDone,'total'=>$nbExo
+        'avancement'=>$avancement,'done'=>$nbExoDone,'total'=>$nbExo,'type'=>$exercice->getType()->getIntitule(),'resultat'=>$resultat,'error'=>$error,'errorMessage'=>$errorMessage,'resultatAttendu'=>$resultatAttendu,'codeBase'=>$exercice->getCodeBase(),'codeSaisi'=>$codeSaisi
     ]);
 }
+
+
 }
