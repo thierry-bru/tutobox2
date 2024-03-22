@@ -31,3 +31,10 @@ npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 /migration/
+/public/upload/avatars/
+/public/upload/corrections/
+/public/upload/exercicehtml/
+/public/upload/ficherevisions/
+/public/upload/illustrations/
+/public/upload/supports/
+/public/videos
