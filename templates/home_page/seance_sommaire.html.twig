@@ -6,17 +6,19 @@
  / Exercices
 <h2>{{ seance.intitule }}</h2>
 <p>{{ seance.objectifs }}</p>
-
+<div class="shadow-lg p-3 mb-2 bg-body-tertiary rounded">
+<h3>Les exercices</h3>
 {% for exercice in seance.exercices %}
 <p>
   <input type="checkbox" disabled {{ user.isExerciceDone(exercice) ? 'checked' :'' }}> {{ exercice.intitule }} [{{ exercice.type }}] </p>
 {% endfor %}
-</ul>
-
-<a href="{{ path('app_seance_exercices',{'idSeance':seance.id,'num':1}) }}"> Démarrer</a>
-
 </div>
-<div class="col-3 m-2">
+ <div class="d-flex flex-row-reverse">
+<a class="btn btn-primary m-2" href="{{ path('app_seance_exercices',{'idSeance':seance.id,'num':1}) }}"> Démarrer</a>
+<a class="btn btn-secondary m-2" href="{{ path('app_seance_exercices_reset',{'idSeance':seance.id}) }}"> Recommencer</a>
+</div>
+</div>
+<div class="col-3 m-2 sidebar">
 <h3>Progression</h3>
 </p>Exercices: {{done}} / {{total}}</p>
 <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="{{avancement}}" aria-valuemin="0" aria-valuemax="100">

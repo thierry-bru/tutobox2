@@ -34,7 +34,10 @@ class HomePageController extends AbstractController
 {
     $nbExoDone = $cursusRepository->countExerciceOfCursusDone($this->getUser()->getId(),$id);
     $nbExo = $cursusRepository->countExerciceOfCursus($id);
+    if ($nbExo!=0)
     $avancement =  $nbExoDone/$nbExo*100;
+    else
+        $avancement=0;
     $cursus = $cursusRepository->find($id);
         return $this->render('home_page/cursus_sommaire.html.twig', [
             'cursus' => $cursus, 'menu' => $cursusRepository->findAll(),
@@ -46,7 +49,10 @@ class HomePageController extends AbstractController
 {
     $nbExoDone = $moduleRepository->countExerciceOfModuleDone($this->getUser()->getId(),$id);
     $nbExo = $moduleRepository->countExerciceOfModule($id);
+    if ($nbExo!=0)
     $avancement =  $nbExoDone/$nbExo*100;
+    else
+        $avancement=0;
 
         return $this->render('home_page/module_sommaire.html.twig', [
             'module' => $moduleRepository->find($id), 'menu' => $cursusRepository->findAll(),
@@ -60,7 +66,10 @@ class HomePageController extends AbstractController
     $firstExercice= $sequence->getExerciceHTMLs()->first();
     $nbExoDone = $SequenceRepository->countExerciceOfSequenceDone($this->getUser()->getId(),$id);
     $nbExo = $SequenceRepository->countExerciceOfSequence($id);
+    if ($nbExo!=0)
     $avancement =  $nbExoDone/$nbExo*100;
+    else
+        $avancement=0;
         return $this->render('home_page/sequence_sommaire.html.twig', [
             'sequence' => $sequence, 'firstExercice'=>$firstExercice, 'menu' => $cursusRepository->findAll(),'avancement'=>$avancement,'done'=>$nbExoDone,'total'=>$nbExo
         ]);
@@ -82,7 +91,10 @@ class HomePageController extends AbstractController
     $nombre= 0;
     $nbExoDone = $seanceRepository->countExerciceOfSeanceDone($this->getUser()->getId(),$idSeance);
     $nbExo = $seanceRepository->countExerciceOfSeance($id);
+    if ($nbExo!=0)
     $avancement =  $nbExoDone/$nbExo*100;
+    else
+        $avancement=0;
         $exercices = $seance->getExercices();
         return $this->render('home_page/seance_sommaire.html.twig', [
             'sequence' => $sequence, 'menu' => $cursusRepository->findAll(),'seance'=>$seance,'exercices'=> $exercices,'user'=>$this->getUser(),'avancement'=>$avancement,'done'=>$nbExoDone,'total'=>$nbExo
@@ -96,6 +108,39 @@ class HomePageController extends AbstractController
     return $this->render('home_page/elements/login_bar.html.twig', [
         'user' => $user
     ]);
+}
+
+#[Route('/home/seance/{idSeance}/exercices/reset', name: 'app_seance_exercices_reset', methods: ['GET'])]
+public function exercicesReset(ModuleRepository $moduleRepository,ExerciceRepository $exerciceRepository,SeanceRepository $seanceRepository,CursusRepository $cursusRepository, int $idSeance, EntityManagerInterface $entityManager): Response
+{
+$seance = $seanceRepository->find($idSeance);
+$exercices= $seance->getExercices();
+$user = $this->getUser();
+foreach ($exercices as $key => $exercice) {
+    $user->removeExercice($exercice);
+}
+$entityManager->flush();
+ return $this->redirectToRoute('app_module_seance', ['idSeance'=>$idSeance,'id'=>$seance->getSequence()->getId()], Response::HTTP_SEE_OTHER);   
+}
+
+// 
+#[Route('/home/seance/exercices/{idExercice}/validate/{num}', name: 'app_seance_exercice_validate', methods: ['GET'])]
+public function exerciceValidate(ModuleRepository $moduleRepository,ExerciceRepository $exerciceRepository,SeanceRepository $seanceRepository,CursusRepository $cursusRepository, int $idExercice, int $num, EntityManagerInterface $entityManager): Response
+{
+    $user = $this->getUser();
+    $exercice= $exerciceRepository->find($idExercice);
+    $user->addExercice($exercice);
+    $entityManager->flush();
+ return $this->redirectToRoute('app_seance_exercices', ['idSeance'=>$exercice->getSeance()->getId(),'num'=>$num], Response::HTTP_SEE_OTHER);   
+}
+#[Route('/home/seance/exercices/{idExercice}/reset/{num}', name: 'app_seance_exercice_reset', methods: ['GET'])]
+public function exerciceReset(ModuleRepository $moduleRepository,ExerciceRepository $exerciceRepository,SeanceRepository $seanceRepository,CursusRepository $cursusRepository, int $idExercice, int $num, EntityManagerInterface $entityManager): Response
+{
+    $user = $this->getUser();
+    $exercice= $exerciceRepository->find($idExercice);
+    $user->removeExercice($exercice);
+    $entityManager->flush();
+ return $this->redirectToRoute('app_seance_exercices', ['idSeance'=>$exercice->getSeance()->getId(),'num'=>$num], Response::HTTP_SEE_OTHER);   
 }
 
 #[Route('/home/seance/{idSeance}/exercices/{num}', name: 'app_seance_exercices', methods: ['GET'])]
@@ -114,12 +159,20 @@ if ($next>$exercices->count())
     $next = 0; 
 if ($prec<1)
     $prec=0;
+    $seance= $seanceRepository->find($idSeance);
+    $nbExoDone = $seanceRepository->countExerciceOfSeanceDone($this->getUser()->getId(),$idSeance);
+    $nbExo = $seanceRepository->countExerciceOfSeance($idSeance);
+    if ($nbExo!=0)
+    $avancement =  $nbExoDone/$nbExo*100;
+    else
+        $avancement=0;
 $exercice= $exerciceRepository->find($idExercice);
     // $user = $this->getUser();
     // $user->addExercice($exercice);
     // $entityManager->flush();
     return $this->render('home_page/seance_exercices.html.twig', [
-        'seance' => $seance,'sequence'=>$seance->getSequence(), 'menu' => $cursusRepository->findAll(),'idExercice'=>$idExercice,'currentExercice'=> $exercice,'prec'=>$prec,'next'=>$next
+        'seance' => $seance,'sequence'=>$seance->getSequence(), 'menu' => $cursusRepository->findAll(),'idExercice'=>$idExercice,'currentExercice'=> $exercice,'prec'=>$prec,'next'=>$next,'num'=>$num,'user'=>$this->getUser(),
+        'avancement'=>$avancement,'done'=>$nbExoDone,'total'=>$nbExo
     ]);
 }
 }

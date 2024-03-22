@@ -12,13 +12,26 @@
     <div class="row">
           <iframe class="" style="height:40vh" src="  {{asset('uploads/supports/' ~ currentExercice.fichierSupport)}}" allowfullscreen="allowfullscreen"></iframe>
   </div>
-  <a href="{{ path('app_seance_exercices',{'idSeance':seance.id,'num':prec}) }}"> Prec</a>
-  <a href="{{ path('app_seance_exercices',{'idSeance':seance.id,'num':next}) }}"> next</a>
+
+   <div class="d-flex flex-row-reverse">
+  {% if next < total and next> 0 %}
+ <a class="btn btn-secondary m-2" href="{{ path('app_seance_exercices',{'idSeance':seance.id,'num':next}) }}"> Suivant</a>
+  {% endif %}
+ {% if user.isExerciceDone(currentExercice) %}
+<a class="btn btn-secondary m-2" href="{{ path('app_seance_exercice_reset',{'idExercice':currentExercice.id,'num':num}) }}"> Invalider</a>
+{% else %}
+ <a class="btn btn-success m-2" href="{{ path('app_seance_exercice_validate',{'idExercice':currentExercice.id,'num':num}) }}"> Valider</a>
+ {% endif %}
+   {% if prec> 0 %}
+ <a class="btn btn-secondary m-2" href="{{ path('app_seance_exercices',{'idSeance':seance.id,'num':prec}) }}"> Précédent</a>
+  {% endif %}
+
+</div>
   </div>
-  <div class="col-3 m-2">
+  <div class="col-3 m-2 sidebar">
 <h3>Progression</h3>
-<div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-  <div class="progress-bar" style="width: 75%"></div>
+<div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="{{ avancement }}" aria-valuemin="0" aria-valuemax="100">
+  <div class="progress-bar" style="width: {{ avancement }}%"></div>
 </div>
 <h3>Fiches révisions</h3>
 <ul>
