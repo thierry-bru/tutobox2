@@ -19,7 +19,7 @@ services:
     myadmin:
         image: phpmyadmin/phpmyadmin
         ports:
-            - "8181:80"
+            - "8083:80"
         links:
             - db:db
 ###> symfony/mailer ###
