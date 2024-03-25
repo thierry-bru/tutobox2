@@ -28,5 +28,5 @@ RUN a2ensite default-ssl.conf
 #Setup certbot
 # RUN apt-get install certbot python3-certbot-apache -y
 # RUN certbot --apache --agree-tos --redirect --hsts --staple-ocsp --email thierry.bru@viaformation.fr -d www.localhost
-RUN php bin/console make:migration;
-RUN php bin/console --no-interaction doctrine:migrations:migrate
+RUN php /var/www/tutobox2/bin/console make:migration;
+RUN php /var/www/tutobox2/bin/console --no-interaction doctrine:migrations:migrate
