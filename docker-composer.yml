@@ -13,13 +13,13 @@ services:
         volumes:
             - ~/.docker/mysql:/var/lib/mysql
         ports:
-            - "3306:3306"
+            - "3307:3307"
         environment:
             - MYSQL_ROOT_PASSWORD=thisisapassworddamned
     myadmin:
         image: phpmyadmin/phpmyadmin
         ports:
-            - "8080:80"
+            - "8181:80"
         links:
             - db:db
 ###> symfony/mailer ###
