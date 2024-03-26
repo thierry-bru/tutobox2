@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Assertion\ResultatCollection;
 use App\Repository\ExerciceRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +17,8 @@ use App\Repository\ModuleRepository;
 use App\Repository\SeanceRepository;
 use App\Repository\SequenceRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Assertion\TestCollection;
+use App\Assertion\TestResultat;
 
 class HomePageController extends AbstractController
 {
@@ -149,6 +152,7 @@ public function exercices(ModuleRepository $moduleRepository,ExerciceRepository 
 $idExercice=0;
 $seance = $seanceRepository->find($idSeance);
     $exercices= $seance->getExercices();
+  
     for ($i=1; $i <  $num; $i++) { 
         $exercices->next();
     }
@@ -167,39 +171,47 @@ if ($prec<1)
     else
         $avancement=0;
 $exercice= $exerciceRepository->find($idExercice);
-    // $user = $this->getUser();
-    // $user->addExercice($exercice);
-    // $entityManager->flush();
+$tests = new TestCollection($exercice);
+
     $error=false;
     $errorMessage="";
     $codeSaisi="";
+    $resultatTests=null;
     if (isset($_POST['code']))
     {
         ob_start();
         $resultat= false;
+        
         try {
             $codeSaisi = $_POST['code'];
-            eval( "declare(strict_types=1);".$codeSaisi.$exercice->getCodeBase().$exercice->getCodeTest());
+            // eval( "declare(strict_types=1);".$codeSaisi.$exercice->getCodeBase().$exercice->getCodeTest());
+            $resultatTests=$tests->run($codeSaisi);
         } catch (\Throwable $th) {
             //throw $th;
             $errorMessage= $th->getMessage();
             $error=true;
+            $resultatTests= new ResultatCollection();
+            $resultatTests->addResultat(new TestResultat(null,null,"Exception:".$th->getMessage(),false));
         }
         $resultat = ob_get_clean();
       
     }
     else 
      {
-        $resultat="pas encore exécuté";
+        ob_start();
+        echo "code non execute";
+        $resultatTests= new ResultatCollection();
+        $resultatTests->addResultat(new TestResultat(null,null,"Exception:code non execute",false));
+        $resultat = ob_get_clean();
         $error=true;
      }
      ob_start();
-     eval("declare(strict_types=1);".$exercice->getCodeAttendu());
+    //  eval("declare(strict_types=1);".$exercice->getCodeAttendu());
      $resultatAttendu = ob_get_clean();
 
     return $this->render('home_page/seance_exercices.html.twig', [
         'seance' => $seance,'sequence'=>$seance->getSequence(), 'menu' => $cursusRepository->findAll(),'idExercice'=>$idExercice,'currentExercice'=> $exercice,'prec'=>$prec,'next'=>$next,'num'=>$num,'user'=>$this->getUser(),
-        'avancement'=>$avancement,'done'=>$nbExoDone,'total'=>$nbExo,'type'=>$exercice->getType()->getIntitule(),'resultat'=>$resultat,'error'=>$error,'errorMessage'=>$errorMessage,'resultatAttendu'=>$resultatAttendu,'codeBase'=>$exercice->getCodeBase(),'codeSaisi'=>$codeSaisi
+        'avancement'=>$avancement,'done'=>$nbExoDone,'total'=>$nbExo,'type'=>$exercice->getType()->getIntitule(),'resultat'=>$resultat,'error'=>$error,'errorMessage'=>$errorMessage,'resultatAttendu'=>$resultatAttendu,'codeBase'=>$exercice->getCodeBase(),'codeSaisi'=>$codeSaisi,'tests'=>$tests,'resultatTests'=>$resultatTests
     ]);
 }
 

@@ -35,8 +35,19 @@
               </div>
            </div>
               <div class="col-4">
+
               {{ resultat }}
-              {{ errorMessage }}
+      <p>Vous avez échoué {{ resultatTests.getFailedNumber() }} sur  {{ resultatTests.count }}</p>
+      <ul>
+        {% for resultat in resultatTests %}
+        <li>{{ resultat.getMessage() }}</li>
+        {% if  resultat.getExpected() %}
+        {% for attribute in resultat.getExpectedToArray() %}
+          {{ attribute }}
+        {% endfor %}
+        {% endif %}
+        {% endfor %}
+      </ul>
            </div>    
       {% endif %}
 
