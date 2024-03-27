@@ -1,0 +1,33 @@
+version: '1.0'
+services:
+    web:
+        build: './docker-build/php/'
+        ports:
+            - "443:443"
+        volumes:
+            - .:/var/www/tutobox2
+        links:
+            - db:db
+    db:
+        build: './docker-build/mysql/'
+        volumes:
+            - ~/.docker/mysql:/var/lib/mysql
+        ports:
+            - "3307:3307"
+        environment:
+            - MYSQL_ROOT_PASSWORD=thisisapassworddamned
+    myadmin:
+        image: phpmyadmin/phpmyadmin
+        ports:
+            - "8083:80"
+        links:
+            - db:db
+###> symfony/mailer ###
+    mailer:
+        image: axllent/mailpit
+        ports:
+            - "1025"
+            - "8025"
+        environment:
+            MP_SMTP_AUTH_ACCEPT_ANY: 1
+            MP_SMTP_AUTH_ALLOW_INSECURE: 1
