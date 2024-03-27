@@ -8,6 +8,8 @@
             {{ encore_entry_link_tags('app') }}
             {{ ux_controller_link_tags() }}
         {% endblock %}
+{% block meta %}
+        {% endblock %}
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
@@ -16,11 +18,8 @@
     <body >
     <div class="container-fluid" style="padding:0px;overflow:hidden;">
      <header class="row">
-     {% block profile %}
-
-        {% endblock %}
- 
-    <h1>Tutobox 2</h1>
+     {% block profile %}{% endblock %}
+    <h1 class="m-2">Tutobox 2</h1>
   </header>
   
 <nav class="row">

@@ -1,5 +1,9 @@
 header
 {
+
+    font-family: "Bevan", serif;
+    font-weight: 400;
+    font-style: normal;
     height: 20vh;
     background-position: right center;
     background-image: url('/assets/pictures/background-header.jpg');
@@ -23,6 +27,11 @@ footer{
 .loginbar
 {
     background-color: #011b37; 
+}
+.titlebar
+{
+  background-color: #19203c;
+  color: whitesmoke;
 }
 .avatar_small
 {
@@ -78,7 +87,7 @@ $primary: #F9070B;
 height: 100%;
 }
 a{
-  color:#011b37;
+  color:#19203c;
   text-decoration: none;
 }
 a:hover{

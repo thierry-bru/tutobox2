@@ -3,17 +3,35 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
-
-    {{ form_errors(registrationForm) }}
-
+ {{ form_errors(registrationForm) }}
     {{ form_start(registrationForm) }}
+<div class="container">
+<div class="row">
+ <div class="col-3"></div>
+  <div class="col-6 titlebar">Créer votre Compte</div>
+   <div class="col-3"></div>
+<div>
+<div class="row">
+        <div class="col-3"></div>
+<div class="shadow-lg p-3 mb-5 bg-body-tertiary rounded col-6">
+        <p class="mb-3 font-weight-normal">Remplissez ce formulaire pour créer votre compte</p>
         {{ form_row(registrationForm.username) }}
         {{ form_row(registrationForm.plainPassword, {
             label: 'Password'
         }) }}
+        
+        <div class="d-flex">{{ form_row(registrationForm.firstName) }}{{ form_row(registrationForm.lastName) }}</div>
+        
+        {{ form_row(registrationForm.filename) }}
         {{ form_row(registrationForm.agreeTerms) }}
-
-        <button type="submit" class="btn">Register</button>
+        <div class="d-flex justify-content-end">
+        <button type="submit" class="btn btn-lg btn-primary m-2">Enregistrer</button>
+        <a  class="btn btn-lg btn-secondary m-2" href="{{ path('app_login') }}">Se connecter</a>
+        </div>
+        </div> <div class="col-3"></div>
+        </div>
+       
+        </div>
+        </div>
     {{ form_end(registrationForm) }}
 {% endblock %}

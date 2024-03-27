@@ -24,7 +24,7 @@ class RegistrationFormType extends AbstractType
                                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
-                        'message' => 'You should agree to our terms.',
+                        'message' => 'Vous devez accepter les conditions d\'utilisation',
                     ]),
                 ],
             ])
@@ -45,9 +45,9 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])->add('firstName')
-            ->add('LastName')
+            ->add('lastName')
             ->add('filename', FileType::class, [
-                'label' => 'Your Avatar',
+                'label' => 'Une image vous représentant',
 
                 // unmapped means that this field is not associated to any entity property
                 'mapped' => false,
